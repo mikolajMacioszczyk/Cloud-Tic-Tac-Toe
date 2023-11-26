@@ -1,20 +1,15 @@
-﻿using CloudTicTacToe.Application.Commands.Players.RegisterPlayer;
+﻿using CloudTicTacToe.API.BaseClasses;
+using CloudTicTacToe.Application.Commands.Players.RegisterPlayer;
 using CloudTicTacToe.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CloudTicTacToe.API.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class PlayerController : ControllerBase
+    public class PlayerController : BaseApiController
     {
-        private readonly IMediator _mediator;
-
-        public PlayerController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        public PlayerController(IMediator mediator) : base(mediator)
+        {}
 
         [HttpPost()]
         public async Task<ActionResult<Player>> RegisterPlayer([FromBody] RegisterPlayerCommand command) =>

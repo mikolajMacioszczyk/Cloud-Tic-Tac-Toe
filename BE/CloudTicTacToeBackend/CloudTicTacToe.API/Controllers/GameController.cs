@@ -1,23 +1,23 @@
+using CloudTicTacToe.API.BaseClasses;
 using CloudTicTacToe.Application.Commands.Games.InitializeGameWithComputer;
+using CloudTicTacToe.Application.Commands.Games.PlayTurn;
 using CloudTicTacToe.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CloudTicTacToe.API.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class GameController : ControllerBase
+    public class GameController : BaseApiController
     {
-        private readonly IMediator _mediator;
-
-        public GameController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        public GameController(IMediator mediator) : base(mediator)
+        {}
 
         [HttpPost()]
         public async Task<ActionResult<GameBoard>> InitializeGameWithComputer([FromBody] InitializeGameWithComputerCommand command) =>
             Ok(await _mediator.Send(command));
+
+        [HttpPut("{Id}/actions/play")]
+        public async Task<ActionResult<GameBoard>> PlayTurn([FromBody] PlayTurnCommand command) =>
+           Ok(await _mediator.Send(command));
     }
 }
