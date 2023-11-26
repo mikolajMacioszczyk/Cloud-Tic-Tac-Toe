@@ -3,6 +3,6 @@
     public enum UserMark
     {
         X = 1,
-        Y = 2,
+        O = 2,
     }
 }
