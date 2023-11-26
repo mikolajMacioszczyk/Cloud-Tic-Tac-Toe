@@ -1,3 +1,7 @@
+using CloudTicTacToe.Application.Interfaces;
+using CloudTicTacToe.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,15 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<TicTacToeContext>(options =>
+            options.UseInMemoryDatabase(databaseName: "InMemoryDb"));
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// TODO: EntityConfigurations
+// TODO: Migrator
+// TODO: Migrations
 
 var app = builder.Build();
 
