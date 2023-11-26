@@ -2,8 +2,7 @@
 
 namespace CloudTicTacToe.Domain.Models
 {
-    public class Player
+    public class Player : BaseDomainModel
     {
-        public UserMark UserMark { get; set; }
     }
 }

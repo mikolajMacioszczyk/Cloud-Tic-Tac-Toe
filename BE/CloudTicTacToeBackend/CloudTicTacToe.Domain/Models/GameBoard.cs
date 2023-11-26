@@ -1,10 +1,10 @@
 ﻿namespace CloudTicTacToe.Domain.Models
 {
-    public class GameBoard
+    public class GameBoard : BaseDomainModel
     {
         public const int BOARD_SIZE = 3;
-        public Player Player1 { get; set; } = null!;
-        public Player Player2 { get; set; } = null!;
+        public Player PlayerX { get; set; } = null!;
+        public Player PlayerO { get; set; } = null!;
         public IEnumerable<Cell> Cells { get; set; } = null!;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace CloudTicTacToe.Domain.Models
 {
-    public class Cell
+    public class Cell : BaseDomainModel
     {
         public GameBoard GameBoard { get; set; } = null!;
         public FieldState FieldState { get; set; }
