@@ -1,6 +1,8 @@
+using CloudTicTacToe.Application.Commands.Cells.MarkCell;
 using CloudTicTacToe.Application.Interfaces;
 using CloudTicTacToe.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<TicTacToeContext>(options =>
             options.UseInMemoryDatabase(databaseName: "InMemoryDb"));
 
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(IUnitOfWork)));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // TODO: EntityConfigurations

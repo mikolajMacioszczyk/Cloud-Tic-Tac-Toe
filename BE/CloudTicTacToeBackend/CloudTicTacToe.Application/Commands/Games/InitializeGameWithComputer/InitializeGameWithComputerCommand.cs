@@ -1,4 +1,9 @@
-﻿namespace CloudTicTacToe.Application.Commands.Games.InitializeGameWithComputer
+﻿using CloudTicTacToe.Domain.Models;
+using MediatR;
+
+namespace CloudTicTacToe.Application.Commands.Games.InitializeGameWithComputer
 {
-    public record InitializeGameWithComputerCommand(Guid PlayerId);
+    // TODO: Result
+    // TODO: Mapping
+    public record InitializeGameWithComputerCommand(Guid PlayerId) : IRequest<GameBoard>;
 }
