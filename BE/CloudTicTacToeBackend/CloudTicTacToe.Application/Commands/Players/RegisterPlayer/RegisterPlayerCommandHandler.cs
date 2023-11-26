@@ -1,10 +1,11 @@
 ﻿using CloudTicTacToe.Application.Interfaces;
+using CloudTicTacToe.Application.Models;
 using CloudTicTacToe.Domain.Models;
 using MediatR;
 
 namespace CloudTicTacToe.Application.Commands.Players.RegisterPlayer
 {
-    public class RegisterPlayerCommandHandler : IRequestHandler<RegisterPlayerCommand, Player>
+    public class RegisterPlayerCommandHandler : IRequestHandler<RegisterPlayerCommand, Result<Player>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -13,7 +14,7 @@ namespace CloudTicTacToe.Application.Commands.Players.RegisterPlayer
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Player> Handle(RegisterPlayerCommand command, CancellationToken cancellationToken)
+        public async Task<Result<Player>> Handle(RegisterPlayerCommand command, CancellationToken cancellationToken)
         {
             var player = new Player() { IsComputer = true };
 

@@ -14,10 +14,10 @@ namespace CloudTicTacToe.API.Controllers
 
         [HttpPost()]
         public async Task<ActionResult<GameBoard>> InitializeGameWithComputer([FromBody] InitializeGameWithComputerCommand command) =>
-            Ok(await _mediator.Send(command));
+            HandleResult(await _mediator.Send(command));
 
         [HttpPut("{Id}/actions/play")]
         public async Task<ActionResult<GameBoard>> PlayTurn([FromBody] PlayTurnCommand command) =>
-           Ok(await _mediator.Send(command));
+           HandleResult(await _mediator.Send(command));
     }
 }

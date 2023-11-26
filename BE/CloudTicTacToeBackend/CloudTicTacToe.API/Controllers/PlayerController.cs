@@ -13,6 +13,6 @@ namespace CloudTicTacToe.API.Controllers
 
         [HttpPost()]
         public async Task<ActionResult<Player>> RegisterPlayer([FromBody] RegisterPlayerCommand command) =>
-            Ok(await _mediator.Send(command));
+            HandleResult(await _mediator.Send(command));
     }
 }

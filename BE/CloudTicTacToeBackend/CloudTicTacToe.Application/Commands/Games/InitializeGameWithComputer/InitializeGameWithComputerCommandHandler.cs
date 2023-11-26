@@ -1,11 +1,12 @@
 ﻿using CloudTicTacToe.Application.Interfaces;
+using CloudTicTacToe.Application.Models;
 using CloudTicTacToe.Domain.Enums;
 using CloudTicTacToe.Domain.Models;
 using MediatR;
 
 namespace CloudTicTacToe.Application.Commands.Games.InitializeGameWithComputer
 {
-    public class InitializeGameWithComputerCommandHandler : IRequestHandler<InitializeGameWithComputerCommand, GameBoard>
+    public class InitializeGameWithComputerCommandHandler : IRequestHandler<InitializeGameWithComputerCommand, Result<GameBoard>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -14,10 +15,14 @@ namespace CloudTicTacToe.Application.Commands.Games.InitializeGameWithComputer
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<GameBoard> Handle(InitializeGameWithComputerCommand command, CancellationToken cancellationToken)
+        public async Task<Result<GameBoard>> Handle(InitializeGameWithComputerCommand command, CancellationToken cancellationToken)
         {
-            // TODO: Handle not found
-            Player player = (await _unitOfWork.PlayerRepository.GetByIDAsync(command.PlayerId))!;
+            var player = (await _unitOfWork.PlayerRepository.GetByIDAsync(command.PlayerId));
+
+            if (player is null)
+            {
+                return new NotFound(command.PlayerId);
+            }
 
             var game = new GameBoard
             {
