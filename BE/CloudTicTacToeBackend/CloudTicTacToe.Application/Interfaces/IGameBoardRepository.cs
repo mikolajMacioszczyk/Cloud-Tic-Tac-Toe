@@ -1,7 +1,7 @@
 ﻿using CloudTicTacToe.Domain.Models;
 
-namespace CloudTicTacToe.Domain.Interfaces
+namespace CloudTicTacToe.Application.Interfaces
 {
     public interface IGameBoardRepository : IBaseEntityRepository<GameBoard>
-    {}
+    { }
 }

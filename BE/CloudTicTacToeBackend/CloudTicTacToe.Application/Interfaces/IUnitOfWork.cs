@@ -1,4 +1,6 @@
-﻿namespace CloudTicTacToe.Domain.Interfaces
+﻿using CloudTicTacToe.Domain.Models;
+
+namespace CloudTicTacToe.Application.Interfaces
 {
     public interface IUnitOfWork
     {
@@ -6,6 +8,6 @@
         public IPlayerRepository PlayerRepository { get; }
         public IGameBoardRepository GameBoardRepository { get; }
 
-        Task SaveChangesAsync();
+        Task<(bool ChangesMade, IEnumerable<BaseDomainModel> EntitiesWithErrors)> SaveChangesAsync();
     }
 }

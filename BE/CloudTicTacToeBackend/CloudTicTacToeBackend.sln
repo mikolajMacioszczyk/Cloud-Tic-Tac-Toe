@@ -5,6 +5,12 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudTicTacToe.API", "CloudTicTacToe.API\CloudTicTacToe.API.csproj", "{01CE3565-09CE-4C05-8BB0-D4402FD3291D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudTicTacToe.Application", "CloudTicTacToe.Application\CloudTicTacToe.Application.csproj", "{FDBFE403-7D1C-47C7-88B6-B9CAD29B5B81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudTicTacToe.Infrastructure", "CloudTicTacToe.Infrastructure\CloudTicTacToe.Infrastructure.csproj", "{558540C7-F407-49D5-BC80-98ADDBED3703}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudTicTacToe.Domain", "CloudTicTacToe.Domain\CloudTicTacToe.Domain.csproj", "{F3DDEC18-B7B1-4CE7-A682-74FB8AD6461F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{01CE3565-09CE-4C05-8BB0-D4402FD3291D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01CE3565-09CE-4C05-8BB0-D4402FD3291D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01CE3565-09CE-4C05-8BB0-D4402FD3291D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDBFE403-7D1C-47C7-88B6-B9CAD29B5B81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDBFE403-7D1C-47C7-88B6-B9CAD29B5B81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDBFE403-7D1C-47C7-88B6-B9CAD29B5B81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDBFE403-7D1C-47C7-88B6-B9CAD29B5B81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{558540C7-F407-49D5-BC80-98ADDBED3703}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{558540C7-F407-49D5-BC80-98ADDBED3703}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{558540C7-F407-49D5-BC80-98ADDBED3703}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{558540C7-F407-49D5-BC80-98ADDBED3703}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3DDEC18-B7B1-4CE7-A682-74FB8AD6461F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3DDEC18-B7B1-4CE7-A682-74FB8AD6461F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3DDEC18-B7B1-4CE7-A682-74FB8AD6461F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3DDEC18-B7B1-4CE7-A682-74FB8AD6461F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
