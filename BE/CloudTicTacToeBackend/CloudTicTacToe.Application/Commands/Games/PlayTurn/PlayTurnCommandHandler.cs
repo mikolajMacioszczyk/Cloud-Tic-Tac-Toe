@@ -29,6 +29,11 @@ namespace CloudTicTacToe.Application.Commands.Games.PlayTurn
                 return new NotFound(command.Id);
             }
 
+            if (game.State != GameGoardState.Ongoing)
+            {
+                return new Failure($"Game already completed with state = {game.State}");
+            }
+
             var cell = game.Cells.FirstOrDefault(c => c.RowNumber == command.RowNumber && c.ColumnNumber == command.ColNumber);
             if (cell is null)
             {

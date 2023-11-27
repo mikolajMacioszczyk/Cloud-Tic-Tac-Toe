@@ -49,7 +49,7 @@ namespace CloudTicTacToe.Application.Services
                 .Select(c => c.FieldState))
                 .Where(c => c != FieldState.Empty);
 
-            bool isWin = fromLine.Count() == 3 && fromLine.Distinct().Count() == 1;
+            bool isWin = fromLine.Count() == GameBoard.BOARD_SIZE && fromLine.Distinct().Count() == 1;
             if (isWin)
             {
                 switch (fromLine.First())
