@@ -45,8 +45,8 @@ namespace CloudTicTacToe.Application.Services
 
         private static FieldState? GetWinnerFromLine(IEnumerable<Cell> line)
         {
-            var fromLine = new HashSet<FieldState>(line
-                .Select(c => c.FieldState))
+            var fromLine = line
+                .Select(c => c.FieldState)
                 .Where(c => c != FieldState.Empty);
 
             bool isWin = fromLine.Count() == GameBoard.BOARD_SIZE && fromLine.Distinct().Count() == 1;

@@ -2,9 +2,9 @@
 {
     public enum GameGoardState
     {
-        Ongoing = 1,
-        Draw = 2,
-        WinnX = 3,
-        WinnO = 4,
+        Ongoing = 0,
+        Draw = 1,
+        WinnX = 2,
+        WinnO = 3,
     }
 }

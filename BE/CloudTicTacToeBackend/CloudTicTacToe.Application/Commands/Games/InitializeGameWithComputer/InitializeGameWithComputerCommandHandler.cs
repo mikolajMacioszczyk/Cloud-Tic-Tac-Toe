@@ -29,6 +29,7 @@ namespace CloudTicTacToe.Application.Commands.Games.InitializeGameWithComputer
                 PlayerX = player,
                 PlayerO = new Player() { IsComputer = true },
                 Cells = await GenerateCellsForBoard(GameBoard.BOARD_SIZE),
+                State = GameGoardState.Ongoing 
             };
 
             await _unitOfWork.GameBoardRepository.AddAsync(game);
