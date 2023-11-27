@@ -2,6 +2,7 @@ using CloudTicTacToe.Application.Interfaces;
 using CloudTicTacToe.Application.Services;
 using CloudTicTacToe.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<TicTacToeContext>(options =>
             options.UseInMemoryDatabase(databaseName: "InMemoryDb"));
+
+builder.Services.AddDbContext<TicTacToeContext>(options =>
+                options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQLConnection")));
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(IUnitOfWork)));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
