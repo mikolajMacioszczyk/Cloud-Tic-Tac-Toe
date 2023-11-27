@@ -35,7 +35,10 @@ namespace CloudTicTacToe.Application.Services
                 return ConvertFromFieldStateToGameBoardState(fromLeftDiagonal.Value);
             }
 
-            // TODO: check draw
+            if (cells.All(c => c.FieldState != FieldState.Empty))
+            {
+                return GameGoardState.Draw;
+            }
 
             return GameGoardState.Ongoing;
         }
