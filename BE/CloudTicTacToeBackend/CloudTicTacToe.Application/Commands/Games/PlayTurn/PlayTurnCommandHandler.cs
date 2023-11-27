@@ -60,8 +60,8 @@ namespace CloudTicTacToe.Application.Commands.Games.PlayTurn
         private static UserMark ToOppositeMark(UserMark userMark) =>
             userMark switch
             {
-                UserMark.X => UserMark.X,
-                UserMark.O => UserMark.O,
+                UserMark.X => UserMark.O,
+                UserMark.O => UserMark.X,
                 _ => throw new ArgumentOutOfRangeException(userMark.ToString())
             };
     }

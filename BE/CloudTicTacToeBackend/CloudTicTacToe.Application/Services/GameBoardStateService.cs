@@ -49,13 +49,16 @@ namespace CloudTicTacToe.Application.Services
                 .Select(c => c.FieldState))
                 .Where(c => c != FieldState.Empty);
 
-            if (fromLine.Count() == 1)
+            bool isWin = fromLine.Count() == 3 && fromLine.Distinct().Count() == 1;
+            if (isWin)
             {
                 switch (fromLine.First())
                 {
                     case FieldState.X:
                     case FieldState.O:
                         return fromLine.First();
+                    default:
+                        throw new ArgumentOutOfRangeException(fromLine.ToString());
                 }
             }
 
