@@ -1,4 +1,5 @@
 using CloudTicTacToe.Application.Interfaces;
+using CloudTicTacToe.Application.Services;
 using CloudTicTacToe.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
@@ -22,6 +23,8 @@ builder.Services.AddDbContext<TicTacToeContext>(options =>
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(IUnitOfWork)));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IComputerPlayerService, SequentialComputerPlayerService>();
+builder.Services.AddScoped<IGameBoardStateService, GameBoardStateService>();
 
 // TODO: EntityConfigurations
 // TODO: Migrator

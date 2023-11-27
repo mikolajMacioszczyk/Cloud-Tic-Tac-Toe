@@ -11,11 +11,13 @@ namespace CloudTicTacToe.Application.Commands.Games.PlayTurn
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IComputerPlayerService _computerPlayerService;
+        private readonly IGameBoardStateService _gameBoardStateService;
 
-        public PlayTurnCommandHandler(IUnitOfWork unitOfWork, IComputerPlayerService computerPlayerService)
+        public PlayTurnCommandHandler(IUnitOfWork unitOfWork, IComputerPlayerService computerPlayerService, IGameBoardStateService gameBoardStateService)
         {
             _unitOfWork = unitOfWork;
             _computerPlayerService = computerPlayerService;
+            _gameBoardStateService = gameBoardStateService;
         }
 
         public async Task<Result<GameBoard>> Handle(PlayTurnCommand command, CancellationToken cancellationToken)
@@ -41,20 +43,12 @@ namespace CloudTicTacToe.Application.Commands.Games.PlayTurn
             cell.FieldState = command.UserMark.ToFieldState();
             _unitOfWork.CellRepository.Update(cell);
 
-            var winner = GetWinner(game.Cells);
-            if (winner.HasValue)
-            {
-                game.Winner = winner;
-            }
-            else
+            game.State = _gameBoardStateService.CheckState(game);
+            if (game.State == GameGoardState.Ongoing)
             {
                 _computerPlayerService.PlayComputerTurn(game.Cells, ToOppositeMark(command.UserMark));
 
-                winner = GetWinner(game.Cells);
-                if (winner.HasValue)
-                {
-                    game.Winner = winner;
-                }
+                game.State = _gameBoardStateService.CheckState(game);
             }
 
             _unitOfWork.GameBoardRepository.Update(game);
@@ -70,45 +64,5 @@ namespace CloudTicTacToe.Application.Commands.Games.PlayTurn
                 UserMark.O => UserMark.O,
                 _ => throw new ArgumentOutOfRangeException(userMark.ToString())
             };
-
-    private static UserMark? GetWinner(IEnumerable<Cell> cells)
-        {
-            for (var i = 0; i < GameBoard.BOARD_SIZE; i++)
-            {
-                var fromRow = GetWinnerFromLine(cells.Where(c => c.RowNumber == i));
-                if (fromRow != null)
-                {
-                    return fromRow;
-                }
-                var fromColumn = GetWinnerFromLine(cells.Where(c => c.ColumnNumber == i));
-                if (fromColumn != null)
-                {
-                    return fromColumn;
-                }
-            }
-
-            return GetWinnerFromLine(cells.Where(c => c.ColumnNumber == c.RowNumber))
-                ?? GetWinnerFromLine(cells.Where(c => c.ColumnNumber == GameBoard.BOARD_SIZE - c.RowNumber));
-        }
-
-        private static UserMark? GetWinnerFromLine(IEnumerable<Cell> line)
-        {
-            var fromLine = new HashSet<FieldState>(line
-                .Select(c => c.FieldState))
-                .Where(c => c != FieldState.Empty);
-
-            if (fromLine.Count() == 1)
-            {
-                switch (fromLine.First())
-                {
-                    case FieldState.X:
-                        return UserMark.X;
-                    case FieldState.O:
-                        return UserMark.O;
-                }
-            }
-
-            return null;
-        }
     }
 }
