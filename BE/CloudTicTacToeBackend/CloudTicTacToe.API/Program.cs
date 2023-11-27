@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
+        // TODO: Options
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
     });
 
@@ -19,8 +20,8 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<TicTacToeContext>(options =>
-            options.UseInMemoryDatabase(databaseName: "InMemoryDb"));
+//builder.Services.AddDbContext<TicTacToeContext>(options =>
+//            options.UseInMemoryDatabase(databaseName: "InMemoryDb"));
 
 builder.Services.AddDbContext<TicTacToeContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQLConnection")));
@@ -31,7 +32,6 @@ builder.Services.AddScoped<IComputerPlayerService, SequentialComputerPlayerServi
 builder.Services.AddScoped<IGameBoardStateService, GameBoardStateService>();
 
 // TODO: Migrator
-// TODO: Migrations
 
 var app = builder.Build();
 
