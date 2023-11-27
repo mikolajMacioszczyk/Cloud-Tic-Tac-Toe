@@ -26,7 +26,6 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IComputerPlayerService, SequentialComputerPlayerService>();
 builder.Services.AddScoped<IGameBoardStateService, GameBoardStateService>();
 
-// TODO: EntityConfigurations
 // TODO: Migrator
 // TODO: Migrations
 
