@@ -1,0 +1,25 @@
+#  run me with: docker-compose -f docker-compose.dev.yml up --build
+
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: TicTacToe
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Pa55w0rd
+    ports:
+      - "5432:5432"
+
+  tictactoe:
+    build: 
+      context: ./BE
+      dockerfile: ./CloudTicTacToeBackend/CloudTicTacToe.API/Dockerfile
+    restart: always
+    environment:
+      - ConnectionStrings:DefaultConnection=Server=postgres;Port=5432;Database=TicTacToe;User Id=postgres;Password=Pa55w0rd;
+    ports:
+      - "80:8080"
+    depends_on:
+      - postgres
