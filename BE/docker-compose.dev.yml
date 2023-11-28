@@ -14,11 +14,12 @@ services:
 
   tictactoe:
     build: 
-      context: ./BE
-      dockerfile: ./CloudTicTacToeBackend/CloudTicTacToe.API/Dockerfile
+      context: .
+      dockerfile: CloudTicTacToeBackend/CloudTicTacToe.API/Dockerfile
     restart: always
     environment:
-      - ConnectionStrings:DefaultConnection=Server=postgres;Port=5432;Database=TicTacToe;User Id=postgres;Password=Pa55w0rd;
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__PostgreSQLConnection: Server=postgres;Port=5432;Database=TicTacToe;User Id=postgres;Password=Pa55w0rd;
     ports:
       - "80:8080"
     depends_on:
