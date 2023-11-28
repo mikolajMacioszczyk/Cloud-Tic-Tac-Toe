@@ -14,7 +14,7 @@ services:
 
   tictactoe:
     build: 
-      context: .
+      context: ./BE
       dockerfile: CloudTicTacToeBackend/CloudTicTacToe.API/Dockerfile
     restart: always
     environment:
