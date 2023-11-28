@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Text.Json.Serialization;
 
+const string CorsAllPolicy = "AllowAll";
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -34,9 +36,16 @@ builder.Services.AddScoped<IGameBoardStateService, GameBoardStateService>();
 
 builder.Services.AddHostedService<TicTacToeMigrator>();
 
-builder.Services.AddCors();
+builder.Services.AddCors(o => o.AddPolicy(CorsAllPolicy, corsBulder =>
+{
+    corsBulder.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+}));
 
 var app = builder.Build();
+
+app.UseCors(CorsAllPolicy);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -46,11 +55,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseCors(builder =>
-    builder.AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader());
 
 app.UseAuthorization();
 

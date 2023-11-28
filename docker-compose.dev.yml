@@ -21,6 +21,7 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__PostgreSQLConnection: Server=postgres;Port=5432;Database=TicTacToe;User Id=postgres;Password=Pa55w0rd;
     ports:
-      - "80:8080"
+      - "8080:80"
+      - "8082:443"
     depends_on:
       - postgres
