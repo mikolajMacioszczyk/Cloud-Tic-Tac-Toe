@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { GameService } from '../services/game.service';
 
 type FieldType = 'X' | 'O' | null;
 type UserChoice = 'X' | 'O';
@@ -13,15 +15,29 @@ type UserChoice = 'X' | 'O';
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss',
 })
-export class BoardComponent {
-  board: FieldType[][] = [
-    [null, null, null],
-    [null, null, null],
-    [null, null, null],
-  ];
+export class BoardComponent implements OnInit {
+  board: FieldType[][] = [];
 
   currentPlayer: UserChoice = 'X';
   winner: FieldType = null;
+
+  constructor(private route: ActivatedRoute,
+    private gameService: GameService) { }
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      const playerIdValue = params['playerId'];
+
+      this.gameService.initializeWithComputer({playerId: playerIdValue}).subscribe(game =>{
+        console.log("Game initialized");
+        this.board = [
+          [null, null, null],
+          [null, null, null],
+          [null, null, null],
+        ];
+      })
+    });
+  }
 
   cellClick(row: number, col: number): void {
     if (!this.board[row][col] && !this.winner) {

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Player } from '../models/player';
-import { PlayerServiceService } from './../services/player-service.service';
+import { PlayerService } from '../services/player.service';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -22,7 +22,7 @@ export class RegisterComponent {
   player: Player | null = null;
 
   constructor(
-    private playerService: PlayerServiceService,
+    private playerService: PlayerService,
     private router: Router)
   {}
 

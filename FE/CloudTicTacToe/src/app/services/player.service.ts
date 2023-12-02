@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Player } from '../models/player';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PlayerServiceService {
+export class PlayerService {
   // TODO: Get api url from variable
   private apiUrl = 'http://localhost:8080/api/Player';
 
