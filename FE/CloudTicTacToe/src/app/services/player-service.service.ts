@@ -12,7 +12,7 @@ export class PlayerServiceService {
 
   constructor(private http: HttpClient) {}
 
-  registerPlayer(): Observable<Player> {
-    return this.http.post<Player>(this.apiUrl + '', {});
+  registerPlayer(body: {name: string}): Observable<Player> {
+    return this.http.post<Player>(this.apiUrl + '', body);
   }
 }
