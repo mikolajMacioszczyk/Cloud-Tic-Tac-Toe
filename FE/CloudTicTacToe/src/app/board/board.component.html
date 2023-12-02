@@ -1,0 +1,12 @@
+<div class="tic-tac-toe-board">
+  <div class="row" *ngFor="let row of board; let rowIndex = index">
+    <div
+      class="cell"
+      *ngFor="let cell of row; let colIndex = index"
+      (click)="cellClick(rowIndex, colIndex)"
+    >
+      {{ cell }}
+    </div>
+  </div>
+  <h1 *ngIf="winner">Winner: {{ this.winner }}</h1>
+</div>
