@@ -7,7 +7,9 @@ type UserChoice = 'X' | 'O';
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule
+  ],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss',
 })
