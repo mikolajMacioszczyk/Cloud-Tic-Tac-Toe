@@ -16,7 +16,7 @@ namespace CloudTicTacToe.Application.Commands.Players.RegisterPlayer
 
         public async Task<Result<Player>> Handle(RegisterPlayerCommand command, CancellationToken cancellationToken)
         {
-            var player = new Player() { IsComputer = false };
+            var player = new Player() { Name = command.Name, IsComputer = false };
 
             await _unitOfWork.PlayerRepository.AddAsync(player);
             await _unitOfWork.SaveChangesAsync();

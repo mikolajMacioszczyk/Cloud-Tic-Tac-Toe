@@ -4,5 +4,5 @@ using MediatR;
 
 namespace CloudTicTacToe.Application.Commands.Players.RegisterPlayer
 {
-    public record RegisterPlayerCommand : IRequest<Result<Player>>;
+    public record RegisterPlayerCommand(string Name) : IRequest<Result<Player>>;
 }
