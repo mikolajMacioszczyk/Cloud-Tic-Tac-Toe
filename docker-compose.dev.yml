@@ -25,3 +25,9 @@ services:
       - "8082:443"
     depends_on:
       - postgres
+
+  web:
+    build: 
+      context: ./Fe/CloudTicTacToe
+    ports:
+      - 4200:4200
