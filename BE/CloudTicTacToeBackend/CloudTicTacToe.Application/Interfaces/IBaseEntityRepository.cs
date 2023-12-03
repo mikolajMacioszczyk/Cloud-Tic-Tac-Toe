@@ -7,6 +7,7 @@ namespace CloudTicTacToe.Application.Interfaces
     {
         Task<TEntity?> GetByIDAsync(Guid id, string includeProperties = "");
         Task<TEntity?> GetFirstOrDefaultAsync(Expression<Func<TEntity, bool>> filter, string includeProperties = "");
+        TEntity? GetFirstOrDefault(Expression<Func<TEntity, bool>> filter, string includeProperties = "");
         Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, string includeProperties = "");
         Task<IEnumerable<TEntity>> TakeAsync(int max, Expression<Func<TEntity, bool>>? filter = null, 
