@@ -1,4 +1,5 @@
 using CloudTicTacToe.Application.Interfaces;
+using CloudTicTacToe.Application.Profiles;
 using CloudTicTacToe.Application.Services;
 using CloudTicTacToe.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +17,7 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -33,6 +34,7 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(ty
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IComputerPlayerService, SequentialComputerPlayerService>();
 builder.Services.AddScoped<IGameBoardStateService, GameBoardStateService>();
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 builder.Services.AddHostedService<TicTacToeMigrator>();
 

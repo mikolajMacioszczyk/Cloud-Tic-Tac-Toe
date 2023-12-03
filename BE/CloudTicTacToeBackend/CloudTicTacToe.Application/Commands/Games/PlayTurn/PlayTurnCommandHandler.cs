@@ -4,23 +4,27 @@ using CloudTicTacToe.Domain.Enums;
 using CloudTicTacToe.Domain.Models;
 using CloudTicTacToe.Application.Extensions;
 using MediatR;
+using CloudTicTacToe.Application.Commands.Games.Results;
+using AutoMapper;
 
 namespace CloudTicTacToe.Application.Commands.Games.PlayTurn
 {
-    public class PlayTurnCommandHandler : IRequestHandler<PlayTurnCommand, Result<GameBoard>>
+    public class PlayTurnCommandHandler : IRequestHandler<PlayTurnCommand, Result<GameBoardResult>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IComputerPlayerService _computerPlayerService;
         private readonly IGameBoardStateService _gameBoardStateService;
+        private readonly IMapper _mapper;
 
-        public PlayTurnCommandHandler(IUnitOfWork unitOfWork, IComputerPlayerService computerPlayerService, IGameBoardStateService gameBoardStateService)
+        public PlayTurnCommandHandler(IUnitOfWork unitOfWork, IComputerPlayerService computerPlayerService, IGameBoardStateService gameBoardStateService, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _computerPlayerService = computerPlayerService;
             _gameBoardStateService = gameBoardStateService;
+            _mapper = mapper;
         }
 
-        public async Task<Result<GameBoard>> Handle(PlayTurnCommand command, CancellationToken cancellationToken)
+        public async Task<Result<GameBoardResult>> Handle(PlayTurnCommand command, CancellationToken cancellationToken)
         {
             var game = await _unitOfWork.GameBoardRepository.GetByIDAsync(command.Id, $"{nameof(GameBoard.PlayerO)},{nameof(GameBoard.PlayerX)},{nameof(GameBoard.Cells)}");
 
@@ -59,7 +63,7 @@ namespace CloudTicTacToe.Application.Commands.Games.PlayTurn
             _unitOfWork.GameBoardRepository.Update(game);
             await _unitOfWork.SaveChangesAsync();
 
-            return game;
+            return _mapper.Map<GameBoardResult>(game);
         }
 
         private static UserMark ToOppositeMark(UserMark userMark) =>

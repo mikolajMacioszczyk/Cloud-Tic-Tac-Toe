@@ -1,4 +1,6 @@
-﻿using CloudTicTacToe.Application.Interfaces;
+﻿using AutoMapper;
+using CloudTicTacToe.Application.Commands.Games.Results;
+using CloudTicTacToe.Application.Interfaces;
 using CloudTicTacToe.Application.Models;
 using CloudTicTacToe.Domain.Enums;
 using CloudTicTacToe.Domain.Models;
@@ -6,16 +8,18 @@ using MediatR;
 
 namespace CloudTicTacToe.Application.Commands.Games.InitializeGameWithComputer
 {
-    public class InitializeGameWithComputerCommandHandler : IRequestHandler<InitializeGameWithComputerCommand, Result<GameBoard>>
+    public class InitializeGameWithComputerCommandHandler : IRequestHandler<InitializeGameWithComputerCommand, Result<GameBoardResult>>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public InitializeGameWithComputerCommandHandler(IUnitOfWork unitOfWork)
+        public InitializeGameWithComputerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task<Result<GameBoard>> Handle(InitializeGameWithComputerCommand command, CancellationToken cancellationToken)
+        public async Task<Result<GameBoardResult>> Handle(InitializeGameWithComputerCommand command, CancellationToken cancellationToken)
         {
             var player = (await _unitOfWork.PlayerRepository.GetByIDAsync(command.PlayerId));
 
@@ -35,7 +39,7 @@ namespace CloudTicTacToe.Application.Commands.Games.InitializeGameWithComputer
             await _unitOfWork.GameBoardRepository.AddAsync(game);
             await _unitOfWork.SaveChangesAsync();
 
-            return game;
+            return _mapper.Map<GameBoardResult>(game);
         }
 
         private async Task<IEnumerable<Cell>> GenerateCellsForBoard(int boardSize)

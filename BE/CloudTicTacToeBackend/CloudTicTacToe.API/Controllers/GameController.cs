@@ -1,7 +1,7 @@
 using CloudTicTacToe.API.BaseClasses;
 using CloudTicTacToe.Application.Commands.Games.InitializeGameWithComputer;
 using CloudTicTacToe.Application.Commands.Games.PlayTurn;
-using CloudTicTacToe.Domain.Models;
+using CloudTicTacToe.Application.Commands.Games.Results;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,11 +13,11 @@ namespace CloudTicTacToe.API.Controllers
         {}
 
         [HttpPost()]
-        public async Task<ActionResult<GameBoard>> InitializeGameWithComputer([FromBody] InitializeGameWithComputerCommand command) =>
+        public async Task<ActionResult<GameBoardResult>> InitializeGameWithComputer([FromBody] InitializeGameWithComputerCommand command) =>
             HandleResult(await _mediator.Send(command));
 
         [HttpPut("{Id}/actions/play")]
-        public async Task<ActionResult<GameBoard>> PlayTurn([FromBody] PlayTurnCommand command) =>
+        public async Task<ActionResult<GameBoardResult>> PlayTurn([FromBody] PlayTurnCommand command) =>
            HandleResult(await _mediator.Send(command));
     }
 }
