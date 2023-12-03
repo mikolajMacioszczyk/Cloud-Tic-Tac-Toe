@@ -28,8 +28,8 @@ export class BoardComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       const playerIdValue = params['playerId'];
 
-      this.gameService.initializeWithComputer({playerId: playerIdValue}).subscribe(game =>{
-        console.log("Game initialized");
+      this.gameService.initializeWithComputer({playerId: playerIdValue}).subscribe(game => {
+        console.log('created game: ', game);
         this.board = [
           [null, null, null],
           [null, null, null],
