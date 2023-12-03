@@ -4,15 +4,19 @@ import { Observable } from 'rxjs';
 import { GameBoard } from '../models/game-board';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GameService {
-// TODO: Get api url from variable
-private apiUrl = 'http://localhost:8080/api/Game';
+  // TODO: Get api url from variable
+  private apiUrl = 'http://localhost:8080/api/Game';
 
-constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-initializeWithComputer(body: {playerId: string}): Observable<GameBoard> {
-  return this.http.post<GameBoard>(this.apiUrl + '', body);
-}
+  initializeWithComputer(body: { playerId: string }): Observable<GameBoard> {
+    return this.http.post<GameBoard>(this.apiUrl + '', body);
+  }
+
+  playTurn(body: { id: string, userMark: string, rowNumber: number, colNumber: number }): Observable<GameBoard> {
+    return this.http.put<GameBoard>(this.apiUrl + '/' + body.id + '/actions/play', body);
+  }
 }

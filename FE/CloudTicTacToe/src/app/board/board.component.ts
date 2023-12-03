@@ -2,9 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GameService } from '../services/game.service';
-
-type FieldType = 'X' | 'O' | null;
-type UserChoice = 'X' | 'O';
+import { GameBoard } from '../models/game-board';
+import { Cell } from '../models/cell';
 
 @Component({
   selector: 'app-board',
@@ -16,10 +15,10 @@ type UserChoice = 'X' | 'O';
   styleUrl: './board.component.scss',
 })
 export class BoardComponent implements OnInit {
-  board: FieldType[][] = [];
+  board: GameBoard | null = null;
 
-  currentPlayer: UserChoice = 'X';
-  winner: FieldType = null;
+  currentPlayer: 'X' | 'O' = 'X';
+  winner: 'Empty' | 'X' | 'O' | null = null;
 
   constructor(private route: ActivatedRoute,
     private gameService: GameService) { }
@@ -29,63 +28,61 @@ export class BoardComponent implements OnInit {
       const playerIdValue = params['playerId'];
 
       this.gameService.initializeWithComputer({playerId: playerIdValue}).subscribe(game => {
-        console.log('created game: ', game);
-        this.board = [
-          [null, null, null],
-          [null, null, null],
-          [null, null, null],
-        ];
+        this.board = game;
+        console.log('board rows: ', this.board?.board);
       })
     });
   }
 
-  cellClick(row: number, col: number): void {
-    if (!this.board[row][col] && !this.winner) {
-      this.board[row][col] = this.currentPlayer;
-      this.checkWinner();
-      this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
+  cellClick(cell: Cell): void {
+    if (cell?.fieldState === 'Empty' && !this.winner) {
+      this.gameService.playTurn({id: this.board!.id, userMark: this.currentPlayer, rowNumber: cell.rowNumber, colNumber: cell.columnNumber}).subscribe(game => {
+        this.board = game;
+        this.checkWinner();
+        console.log('board rows: ', this.board?.board);
+    });
     }
   }
 
   checkWinner(): void {
     for (let i = 0; i < 3; i++) {
+      const row = this.board?.board[i];
       // Check rows
       if (
-        this.board[i][0] !== null &&
-        this.board[i][0] === this.board[i][1] &&
-        this.board[i][1] === this.board[i][2]
+        row![0].fieldState !== 'Empty' &&
+        row![0].fieldState === row![1].fieldState &&
+        row![1].fieldState === row![2].fieldState
       ) {
-        this.winner = this.board[i][0];
+        this.winner = row![0].fieldState;
         return;
       }
-
       // Check columns
       if (
-        this.board[0][i] !== null &&
-        this.board[0][i] === this.board[1][i] &&
-        this.board[1][i] === this.board[2][i]
+        this.board?.board[0][i].fieldState !== 'Empty' &&
+        this.board?.board[0][i].fieldState === this.board?.board[1][i].fieldState &&
+        this.board?.board[1][i].fieldState === this.board?.board[2][i].fieldState
       ) {
-        this.winner = this.board[0][i];
+        this.winner = this.board!.board[0][i].fieldState;
         return;
       }
     }
 
     // Check diagonals
     if (
-      this.board[0][0] !== null &&
-      this.board[0][0] === this.board[1][1] &&
-      this.board[1][1] === this.board[2][2]
+      this.board?.board[0][0].fieldState !== 'Empty' &&
+      this.board?.board[0][0].fieldState ===this.board?.board[1][1].fieldState &&
+      this.board?.board[1][1].fieldState === this.board?.board[2][2].fieldState
     ) {
-      this.winner = this.board[0][0];
+        this.winner = this.board!.board[0][0].fieldState;
       return;
     }
 
     if (
-      this.board[0][2] !== null &&
-      this.board[0][2] === this.board[1][1] &&
-      this.board[1][1] === this.board[2][0]
+      this.board?.board[0][2].fieldState !== 'Empty' &&
+      this.board!.board[0][2].fieldState === this.board!.board[1][1].fieldState &&
+      this.board!.board[1][1].fieldState === this.board!.board[2][0].fieldState
     ) {
-      this.winner = this.board[0][2];
+        this.winner = this.board!.board[0][2].fieldState;
       return;
     }
   }

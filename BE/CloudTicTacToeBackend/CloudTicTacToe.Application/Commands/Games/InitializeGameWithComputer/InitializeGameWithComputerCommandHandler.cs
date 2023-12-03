@@ -31,7 +31,7 @@ namespace CloudTicTacToe.Application.Commands.Games.InitializeGameWithComputer
             var game = new GameBoard
             {
                 PlayerX = player,
-                PlayerO = new Player() { IsComputer = true },
+                PlayerO = new Player() { Name = "Computer", IsComputer = true },
                 Cells = await GenerateCellsForBoard(GameBoard.BOARD_SIZE),
                 State = GameGoardState.Ongoing 
             };

@@ -11,7 +11,7 @@ namespace CloudTicTacToe.Application.Profiles.Resolvers
             return source.Cells
                 .GroupBy(s => s.RowNumber)
                 .OrderBy(g => g.Key)
-                .Select(g => g.Select(cell => context.Mapper.Map<CellResult>(cell)).ToList())
+                .Select(g => g.Select(cell => context.Mapper.Map<CellResult>(cell)).OrderBy(c => c.ColumnNumber).ToList())
                 .ToList();
         }
     }
