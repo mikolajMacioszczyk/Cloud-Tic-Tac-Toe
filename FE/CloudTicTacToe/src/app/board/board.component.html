@@ -6,5 +6,6 @@
       </span>
     </div>
   </div>
-  <h1 *ngIf="winner">Winner: {{ this.winner }}</h1>
 </div>
+<h1 *ngIf="!isOngoing">Winner: {{ stateMessage }}</h1>
+<button (click)="restartGame()">Restart game</button>

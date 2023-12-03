@@ -29,10 +29,10 @@ namespace CloudTicTacToe.Application.Services
                 return ConvertFromFieldStateToGameBoardState(fromLeftDiagonal.Value);
             }
 
-            var fromRightDiagonal = GetWinnerFromLine(cells.Where(c => c.ColumnNumber == GameBoard.BOARD_SIZE - c.RowNumber));
-            if (fromLeftDiagonal.HasValue)
+            var fromRightDiagonal = GetWinnerFromLine(cells.Where(c => c.ColumnNumber == GameBoard.BOARD_SIZE - c.RowNumber - 1));
+            if (fromRightDiagonal.HasValue)
             {
-                return ConvertFromFieldStateToGameBoardState(fromLeftDiagonal.Value);
+                return ConvertFromFieldStateToGameBoardState(fromRightDiagonal.Value);
             }
 
             if (cells.All(c => c.FieldState != FieldState.Empty))
