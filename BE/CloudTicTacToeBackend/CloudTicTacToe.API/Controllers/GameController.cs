@@ -1,4 +1,5 @@
 using CloudTicTacToe.API.BaseClasses;
+using CloudTicTacToe.Application.Commands.Games.CreateOrJoinGame;
 using CloudTicTacToe.Application.Commands.Games.InitializeGameWithComputer;
 using CloudTicTacToe.Application.Commands.Games.PlayTurn;
 using CloudTicTacToe.Application.Commands.Games.Results;
@@ -14,6 +15,10 @@ namespace CloudTicTacToe.API.Controllers
 
         [HttpPost()]
         public async Task<ActionResult<GameBoardResult>> InitializeGameWithComputer([FromBody] InitializeGameWithComputerCommand command) =>
+            HandleResult(await _mediator.Send(command));
+
+        [HttpPost("online")]
+        public async Task<ActionResult<GameBoardResult>> CreateOrJoinGame([FromBody] CreateOrJoinGameCommand command) =>
             HandleResult(await _mediator.Send(command));
 
         [HttpPut("{Id}/actions/play")]

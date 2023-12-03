@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CloudTicTacToe.Application.Commands.Games.Results;
+using CloudTicTacToe.Application.Helpers;
 using CloudTicTacToe.Application.Interfaces;
 using CloudTicTacToe.Application.Models;
 using CloudTicTacToe.Domain.Enums;
@@ -32,7 +33,7 @@ namespace CloudTicTacToe.Application.Commands.Games.InitializeGameWithComputer
             {
                 PlayerX = player,
                 PlayerO = new Player() { Name = "Computer", IsComputer = true },
-                Cells = await GenerateCellsForBoard(GameBoard.BOARD_SIZE),
+                Cells = await GameBoardHelper.GenerateCellsForBoard(GameBoard.BOARD_SIZE, _unitOfWork.CellRepository),
                 State = GameGoardState.Ongoing 
             };
 
@@ -40,26 +41,6 @@ namespace CloudTicTacToe.Application.Commands.Games.InitializeGameWithComputer
             await _unitOfWork.SaveChangesAsync();
 
             return _mapper.Map<GameBoardResult>(game);
-        }
-
-        private async Task<IEnumerable<Cell>> GenerateCellsForBoard(int boardSize)
-        {
-            var collection = new Cell[boardSize * boardSize];
-            for (int i = 0; i < boardSize; i++)
-            {
-                for (int j = 0; j < boardSize; j++)
-                {
-                    collection[i * boardSize + j] = new Cell() 
-                    { 
-                        RowNumber = i, 
-                        ColumnNumber = j, 
-                        FieldState = FieldState.Empty
-                    };
-                    await _unitOfWork.CellRepository.AddAsync(collection[i * boardSize + j]);
-                }
-            }
-
-            return collection;
         }
     }
 }
