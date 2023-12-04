@@ -1,4 +1,4 @@
-#  run me with: docker-compose -f docker-compose.dev.yml up --build
+#  run me with: docker-compose up
 
 version: '3.8'
 
@@ -13,9 +13,7 @@ services:
       - "5432:5432"
 
   api:
-    build: 
-      context: ./BE
-      dockerfile: CloudTicTacToeBackend/CloudTicTacToe.API/Dockerfile
+    image: macioszczykmikolaj/tictactoe-api:latest
     restart: always
     environment:
       ASPNETCORE_ENVIRONMENT: Development
@@ -26,8 +24,7 @@ services:
     depends_on:
       - postgres
 
-  # web:
-  #   build: 
-  #     context: ./Fe/CloudTicTacToe
-  #   ports:
-  #     - 4200:4200
+  web:
+    image: macioszczykmikolaj/tictactoe-web:latest
+    ports:
+      - 4200:4200

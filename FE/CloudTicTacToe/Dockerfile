@@ -1,3 +1,7 @@
+# cd \FE\CloudTicTacToe\
+# docker build -t macioszczykmikolaj/tictactoe-web .
+# docker push macioszczykmikolaj/tictactoe-web
+
 FROM --platform=$BUILDPLATFORM node:20.8.0-bullseye-slim as builder
 
 WORKDIR /app
