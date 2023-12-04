@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { StateService } from '../services/state.service';
+import { StateService } from '../../services/state.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 

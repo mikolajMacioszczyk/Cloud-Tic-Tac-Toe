@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Player } from '../models/player';
-import { PlayerApiService } from '../services/player.api.service';
+import { Player } from '../../models/player';
+import { PlayerApiService } from '../../services/player.api.service';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { StateService } from '../services/state.service';
+import { StateService } from '../../services/state.service';
 
 @Component({
   selector: 'app-register',

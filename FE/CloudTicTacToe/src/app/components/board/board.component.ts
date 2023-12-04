@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GameApiService } from '../services/game.api.service';
-import { GameBoard } from '../models/game-board';
-import { Cell } from '../models/cell';
-import { StateService } from '../services/state.service';
+import { GameApiService } from '../../services/game.api.service';
+import { GameBoard } from '../../models/game-board';
+import { Cell } from '../../models/cell';
+import { StateService } from '../../services/state.service';
 
 @Component({
   selector: 'app-board',
