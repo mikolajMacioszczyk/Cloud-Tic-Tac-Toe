@@ -4,8 +4,8 @@ using CloudTicTacToe.Domain.Enums;
 using CloudTicTacToe.Domain.Models;
 using CloudTicTacToe.Application.Extensions;
 using MediatR;
-using CloudTicTacToe.Application.Commands.Games.Results;
 using AutoMapper;
+using CloudTicTacToe.Application.Results;
 
 namespace CloudTicTacToe.Application.Commands.Games.PlayTurn
 {

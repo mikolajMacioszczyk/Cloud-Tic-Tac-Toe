@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using CloudTicTacToe.Application.Commands.Games.Results;
 using CloudTicTacToe.Application.Helpers;
 using CloudTicTacToe.Application.Interfaces;
 using CloudTicTacToe.Application.Models;
+using CloudTicTacToe.Application.Results;
 using CloudTicTacToe.Domain.Enums;
 using CloudTicTacToe.Domain.Models;
 using MediatR;

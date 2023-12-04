@@ -25,7 +25,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //builder.Services.AddDbContext<TicTacToeContext>(options =>
-//            options.UseInMemoryDatabase(databaseName: "InMemoryDb"));
+//           options.UseInMemoryDatabase(databaseName: "InMemoryDb"));
 
 builder.Services.AddDbContext<TicTacToeContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQLConnection")));
@@ -36,7 +36,7 @@ builder.Services.AddScoped<IComputerPlayerService, SequentialComputerPlayerServi
 builder.Services.AddScoped<IGameBoardStateService, GameBoardStateService>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
-builder.Services.AddHostedService<TicTacToeMigrator>();
+// builder.Services.AddHostedService<TicTacToeMigrator>();
 
 builder.Services.AddCors(o => o.AddPolicy(CorsAllPolicy, corsBulder =>
 {

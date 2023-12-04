@@ -1,6 +1,6 @@
 ﻿using CloudTicTacToe.Domain.Enums;
 
-namespace CloudTicTacToe.Application.Commands.Games.Results
+namespace CloudTicTacToe.Application.Results
 {
     public class CellResult
     {

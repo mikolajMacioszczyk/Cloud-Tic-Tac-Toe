@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CloudTicTacToe.Application.Commands.Games.Results;
+using CloudTicTacToe.Application.Results;
 using CloudTicTacToe.Domain.Models;
 
 namespace CloudTicTacToe.Application.Profiles.Resolvers

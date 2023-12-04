@@ -1,5 +1,5 @@
-﻿using CloudTicTacToe.Application.Commands.Games.Results;
-using CloudTicTacToe.Application.Models;
+﻿using CloudTicTacToe.Application.Models;
+using CloudTicTacToe.Application.Results;
 using CloudTicTacToe.Domain.Enums;
 using MediatR;
 
