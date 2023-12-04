@@ -8,6 +8,7 @@ namespace CloudTicTacToe.Domain.Models
         public Player PlayerX { get; set; } = null!;
         public Player? PlayerO { get; set; }
         public GameGoardState State { get; set; }
+        public Guid NextPlayerId { get; set; }
         public IEnumerable<Cell> Cells { get; set; } = null!;
     }
 }

@@ -36,8 +36,9 @@ namespace CloudTicTacToe.Application.Commands.Games.InitializeGameWithComputer
                 PlayerX = player,
                 PlayerO = new Player() { Name = "Computer", IsComputer = true },
                 Cells = await GameBoardHelper.GenerateCellsForBoard(GameBoard.BOARD_SIZE, _unitOfWork.CellRepository),
-                State = GameGoardState.Ongoing 
+                State = GameGoardState.Ongoing,
             };
+            game.NextPlayerId = GameBoardHelper.GetRandomStartingUser(game);
 
             await _unitOfWork.GameBoardRepository.AddAsync(game);
             await _unitOfWork.SaveChangesAsync();

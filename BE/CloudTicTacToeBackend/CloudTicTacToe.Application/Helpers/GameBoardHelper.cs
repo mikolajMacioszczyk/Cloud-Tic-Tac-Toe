@@ -6,6 +6,7 @@ namespace CloudTicTacToe.Application.Helpers
 {
     public static class GameBoardHelper
     {
+        private static Random random = new(); 
         public static async Task<IEnumerable<Cell>> GenerateCellsForBoard(int boardSize, ICellRepository cellRepository)
         {
             var collection = new Cell[boardSize * boardSize];
@@ -34,6 +35,11 @@ namespace CloudTicTacToe.Application.Helpers
             {
                 gameBoardRepository.Delete(game);
             }
+        }
+
+        public static Guid GetRandomStartingUser(GameBoard gameBoard)
+        {
+            return random.Next(2) == 0 ? gameBoard.PlayerX.Id : gameBoard.PlayerO!.Id;
         }
     }
 }

@@ -72,6 +72,7 @@ namespace CloudTicTacToe.Application.Commands.Games.PlayTurn
                 _computerPlayerService.PlayComputerTurn(game.Cells, ToOppositeMark(userMark.Value));
 
                 game.State = _gameBoardStateService.CheckState(game);
+                game.NextPlayerId = ToOppositePlayerId(game);
             }
 
             return game;
@@ -79,6 +80,11 @@ namespace CloudTicTacToe.Application.Commands.Games.PlayTurn
 
         private Result<GameBoard> PlayUserTurn(PlayTurnCommand command, GameBoard game)
         {
+            if (command.PlayerId != game.NextPlayerId)
+            {
+                return new Failure($"Requested invalid turn for player with id = {command.PlayerId}");
+            }
+
             UserMark? userMark = command.PlayerId == game.PlayerX.Id ? UserMark.X : command.PlayerId == game.PlayerO!.Id ? UserMark.O : null;
 
             if (!userMark.HasValue)
@@ -101,6 +107,7 @@ namespace CloudTicTacToe.Application.Commands.Games.PlayTurn
             _unitOfWork.CellRepository.Update(cell);
 
             game.State = _gameBoardStateService.CheckState(game);
+            game.NextPlayerId = ToOppositePlayerId(game);
 
             return game;
         }
@@ -112,5 +119,8 @@ namespace CloudTicTacToe.Application.Commands.Games.PlayTurn
                 UserMark.O => UserMark.X,
                 _ => throw new ArgumentOutOfRangeException(userMark.ToString())
             };
+
+        private static Guid ToOppositePlayerId(GameBoard game) =>
+            game.NextPlayerId == game.PlayerX.Id ? game.PlayerO!.Id : game.PlayerX.Id;
     }
 }

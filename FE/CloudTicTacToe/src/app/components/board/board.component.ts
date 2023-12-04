@@ -26,6 +26,10 @@ export class BoardComponent implements OnInit {
     return this.board?.state === "Waiting";
   }
 
+  get isYourTurn(): boolean {
+    return this.board?.nextPlayerId == this.playerId;
+  }
+
   get stateMessage(): string {
     switch (this.board?.state) {
       case 'Draw':
@@ -56,7 +60,7 @@ export class BoardComponent implements OnInit {
   }
 
   cellClick(cell: Cell): void {
-    if (cell?.fieldState === 'Empty' && this.isOngoing) {
+    if (cell?.fieldState === 'Empty' && this.isOngoing && this.isYourTurn) {
       this.gameService
         .playTurn({
           id: this.board!.id,

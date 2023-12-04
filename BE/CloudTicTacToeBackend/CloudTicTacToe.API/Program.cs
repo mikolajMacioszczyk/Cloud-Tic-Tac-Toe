@@ -35,7 +35,7 @@ builder.Services.AddScoped<IComputerPlayerService, SequentialComputerPlayerServi
 builder.Services.AddScoped<IGameBoardStateService, GameBoardStateService>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
-// builder.Services.AddHostedService<TicTacToeMigrator>();
+builder.Services.AddHostedService<TicTacToeMigrator>();
 
 builder.Services.AddCors(o => o.AddPolicy(CorsAllPolicy, corsBulder =>
 {

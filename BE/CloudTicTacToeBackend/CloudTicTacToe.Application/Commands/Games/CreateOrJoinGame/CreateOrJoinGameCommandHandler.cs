@@ -64,6 +64,7 @@ namespace CloudTicTacToe.Application.Commands.Games.CreateOrJoinGame
 
                 game.PlayerO = player;
                 game.State = GameGoardState.Ongoing;
+                game.NextPlayerId = GameBoardHelper.GetRandomStartingUser(game);
 
                 lock (mutex)
                 {
@@ -73,7 +74,7 @@ namespace CloudTicTacToe.Application.Commands.Games.CreateOrJoinGame
                     {
                         return (false, null);
                     }
-                    
+
                     _unitOfWork.GameBoardRepository.Update(game);
                     _unitOfWork.SaveChangesAsync().Wait();
                 }

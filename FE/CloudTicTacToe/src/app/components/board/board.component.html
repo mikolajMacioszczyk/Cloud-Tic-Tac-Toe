@@ -1,4 +1,6 @@
 <h1 *ngIf="isWaiting">Waiting for opponent</h1>
+<h1 *ngIf="isYourTurn">Your turn!</h1>
+<h1 *ngIf="!isWaiting && !isYourTurn">Opponent turn</h1>
 <div class="tic-tac-toe-board">
   <div class="row" *ngFor="let row of board?.board">
     <div
