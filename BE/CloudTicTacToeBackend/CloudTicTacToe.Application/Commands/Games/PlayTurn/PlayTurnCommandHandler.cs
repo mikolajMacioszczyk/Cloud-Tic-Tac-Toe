@@ -38,6 +38,54 @@ namespace CloudTicTacToe.Application.Commands.Games.PlayTurn
                 return new Failure($"Game already completed with state = {game.State}");
             }
 
+            bool isComputerGame = game.PlayerX.IsComputer || game.PlayerO!.IsComputer;
+
+            var gameResult = PlayUserTurn(command, game);
+            if (!gameResult.IsSuccess)
+            {
+                return gameResult.MapNonSuccessfullTo<GameBoardResult>();
+            }
+            if (isComputerGame)
+            {
+                gameResult = PlayComputerTurn(command, game);
+                if (!gameResult.IsSuccess)
+                {
+                    return gameResult.MapNonSuccessfullTo<GameBoardResult>();
+                }
+            }
+            _unitOfWork.GameBoardRepository.Update(game);
+            await _unitOfWork.SaveChangesAsync();
+            return _mapper.Map<GameBoardResult>(game);
+        }
+
+        private Result<GameBoard> PlayComputerTurn(PlayTurnCommand command, GameBoard game)
+        {
+            UserMark? userMark = command.PlayerId == game.PlayerX.Id ? UserMark.X : command.PlayerId == game.PlayerO!.Id ? UserMark.O : null;
+
+            if (!userMark.HasValue)
+            {
+                return new Failure($"Player with id {command.PlayerId} is not part of the game");
+            }
+
+            if (game.State == GameGoardState.Ongoing)
+            {
+                _computerPlayerService.PlayComputerTurn(game.Cells, ToOppositeMark(userMark.Value));
+
+                game.State = _gameBoardStateService.CheckState(game);
+            }
+
+            return game;
+        }
+
+        private Result<GameBoard> PlayUserTurn(PlayTurnCommand command, GameBoard game)
+        {
+            UserMark? userMark = command.PlayerId == game.PlayerX.Id ? UserMark.X : command.PlayerId == game.PlayerO!.Id ? UserMark.O : null;
+
+            if (!userMark.HasValue)
+            {
+                return new Failure($"Player with id {command.PlayerId} is not part of the game");
+            }
+
             var cell = game.Cells.FirstOrDefault(c => c.RowNumber == command.RowNumber && c.ColumnNumber == command.ColNumber);
             if (cell is null)
             {
@@ -49,21 +97,12 @@ namespace CloudTicTacToe.Application.Commands.Games.PlayTurn
                 return new Failure($"Cell already merked with {cell.FieldState}");
             }
 
-            cell.FieldState = command.UserMark.ToFieldState();
+            cell.FieldState = userMark.Value.ToFieldState();
             _unitOfWork.CellRepository.Update(cell);
 
             game.State = _gameBoardStateService.CheckState(game);
-            if (game.State == GameGoardState.Ongoing)
-            {
-                _computerPlayerService.PlayComputerTurn(game.Cells, ToOppositeMark(command.UserMark));
 
-                game.State = _gameBoardStateService.CheckState(game);
-            }
-
-            _unitOfWork.GameBoardRepository.Update(game);
-            await _unitOfWork.SaveChangesAsync();
-
-            return _mapper.Map<GameBoardResult>(game);
+            return game;
         }
 
         private static UserMark ToOppositeMark(UserMark userMark) =>

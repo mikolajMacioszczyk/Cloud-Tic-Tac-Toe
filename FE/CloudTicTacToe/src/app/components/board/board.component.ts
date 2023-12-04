@@ -15,9 +15,8 @@ import { StateService } from '../../services/state.service';
 })
 export class BoardComponent implements OnInit {
   private gameId: string = '';
+  private playerId: string = '';
   board: GameBoard | null = null;
-
-  currentPlayer: 'X' | 'O' = 'X';
 
   get isOngoing(): boolean {
     return this.board?.state === 'Ongoing';
@@ -46,10 +45,11 @@ export class BoardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (!this.stateService.GetActiveGameId()){
+    if (!this.stateService.GetLoggedPlayerId() || !this.stateService.GetActiveGameId()){
       this.router.navigate(['/']);
     }
     this.gameId = this.stateService.GetActiveGameId()!;
+    this.playerId = this.stateService.GetLoggedPlayerId()!;
     this.gameService.getById(this.gameId).subscribe(board => {
       this.board = board;
     })
@@ -60,7 +60,7 @@ export class BoardComponent implements OnInit {
       this.gameService
         .playTurn({
           id: this.board!.id,
-          userMark: this.currentPlayer,
+          playerId: this.playerId,
           rowNumber: cell.rowNumber,
           colNumber: cell.columnNumber,
         })

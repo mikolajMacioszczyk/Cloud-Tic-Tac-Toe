@@ -27,6 +27,6 @@ export class AppComponent {
 
   logout(): void {
     this.stateService.RemovePlayerId();
-    this.router.navigate(['/']);
+    this.router.navigate(['/register']);
   }
 }
