@@ -23,6 +23,10 @@ export class BoardComponent implements OnInit {
     return this.board?.state === 'Ongoing';
   }
 
+  get isWaiting(): boolean {
+    return this.board?.state === "Waiting";
+  }
+
   get stateMessage(): string {
     switch (this.board?.state) {
       case 'Draw':

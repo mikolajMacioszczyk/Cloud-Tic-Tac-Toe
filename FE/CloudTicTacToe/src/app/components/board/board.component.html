@@ -1,6 +1,12 @@
+<h1 *ngIf="isWaiting">Waiting for opponent</h1>
 <div class="tic-tac-toe-board">
   <div class="row" *ngFor="let row of board?.board">
-    <div class="cell" *ngFor="let cell of row" (click)="cellClick(cell)">
+    <div
+      class="cell"
+      ngClass="{'cell-disabled': isWaiting}"
+      *ngFor="let cell of row"
+      (click)="cellClick(cell)"
+    >
       <span *ngIf="cell.fieldState != 'Empty'">
         {{ cell.fieldState }}
       </span>

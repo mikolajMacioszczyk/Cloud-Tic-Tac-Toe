@@ -22,7 +22,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     const playerId = this.stateService.GetLoggedPlayerId();
-    // TODO: If player id exists and game id exists - navigate to game
     if (!playerId){
       this.router.navigate(['/register']);
     }
@@ -30,6 +29,13 @@ export class HomeComponent implements OnInit {
 
   initializeGameWithComputer(){
     this.gameService.initializeWithComputer({playerId: this.stateService.GetLoggedPlayerId()!}).subscribe(game => {
+      this.stateService.SetActiveGameId(game.id);
+      this.router.navigate(['/game']);
+    });
+  }
+
+  initializeOrJoinOnlineGame(){
+    this.gameService.initializeOrJoinOnlineGame({playerId: this.stateService.GetLoggedPlayerId()!}).subscribe(game => {
       this.stateService.SetActiveGameId(game.id);
       this.router.navigate(['/game']);
     });

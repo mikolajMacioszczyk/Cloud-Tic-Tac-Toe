@@ -20,6 +20,10 @@ export class GameApiService {
     return this.http.post<GameBoard>(this.apiUrl + '', body);
   }
 
+  initializeOrJoinOnlineGame(body: { playerId: string }): Observable<GameBoard> {
+    return this.http.post<GameBoard>(this.apiUrl + '/online', body);
+  }
+
   playTurn(body: { id: string, userMark: string, rowNumber: number, colNumber: number }): Observable<GameBoard> {
     return this.http.put<GameBoard>(this.apiUrl + '/' + body.id + '/actions/play', body);
   }
