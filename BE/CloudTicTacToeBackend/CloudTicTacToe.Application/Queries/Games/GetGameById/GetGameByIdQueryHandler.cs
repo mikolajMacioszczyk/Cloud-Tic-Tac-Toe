@@ -21,6 +21,11 @@ namespace CloudTicTacToe.Application.Queries.Games.GetGameById
         public async Task<Result<GameBoardResult>> Handle(GetGameByIdQuery query, CancellationToken cancellationToken)
         {
             var game = await _unitOfWork.GameBoardRepository.GetByIDAsync(query.Id, $"{nameof(GameBoard.Cells)},{nameof(GameBoard.PlayerX)},{nameof(GameBoard.PlayerO)}");
+            if (game is null)
+            {
+                return new NotFound(query.Id);
+            }
+
             return _mapper.Map<GameBoardResult>(game);
         }
     }

@@ -4,5 +4,5 @@ using MediatR;
 
 namespace CloudTicTacToe.Application.Queries.Players.GetAllPlayers
 {
-    public record GetAllPlayersCommand : IRequest<Result<IEnumerable<PlayerResult>>>;
+    public record GetAllPlayersQuery : IRequest<Result<IEnumerable<PlayerResult>>>;
 }

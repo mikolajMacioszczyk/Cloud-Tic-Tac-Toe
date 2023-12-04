@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { GameService } from '../services/game.service';
+import { GameApiService } from '../services/game.api.service';
 import { GameBoard } from '../models/game-board';
 import { Cell } from '../models/cell';
 
@@ -37,7 +37,7 @@ export class BoardComponent implements OnInit {
   }
 
   constructor(private route: ActivatedRoute,
-    private gameService: GameService) { }
+    private gameService: GameApiService) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {

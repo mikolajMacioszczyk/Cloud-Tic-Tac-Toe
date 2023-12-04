@@ -3,7 +3,6 @@ using CloudTicTacToe.Application.Profiles;
 using CloudTicTacToe.Application.Services;
 using CloudTicTacToe.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Text.Json.Serialization;
 
 const string CorsAllPolicy = "AllowAll";

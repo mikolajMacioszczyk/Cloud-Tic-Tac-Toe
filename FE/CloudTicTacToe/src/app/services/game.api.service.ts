@@ -6,7 +6,7 @@ import { GameBoard } from '../models/game-board';
 @Injectable({
   providedIn: 'root',
 })
-export class GameService {
+export class GameApiService {
   // TODO: Get api url from variable
   private apiUrl = 'http://localhost:8080/api/Game';
 
