@@ -1,2 +1,7 @@
-<h1>Tic Tac Toe Game</h1>
+<div class="navbar">
+    <h1>Tic Tac Toe Game</h1>
+    <div *ngIf="hasLoggedInUser">
+        <button (click)="logout()">Log out</button>
+    </div>
+</div>
 <router-outlet></router-outlet>

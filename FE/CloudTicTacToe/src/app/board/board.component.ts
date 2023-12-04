@@ -1,16 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GameApiService } from '../services/game.api.service';
 import { GameBoard } from '../models/game-board';
 import { Cell } from '../models/cell';
+import { StateService } from '../services/state.service';
 
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss',
 })
@@ -25,40 +24,53 @@ export class BoardComponent implements OnInit {
   }
 
   get stateMessage(): string {
-    switch (this.board?.state){
+    switch (this.board?.state) {
       case 'Draw':
-        return 'Game ended with draw'
+        return 'Game ended with draw';
       case 'WinnO':
-        return 'Player O won!'
+        return 'Player O won!';
       case 'WinnX':
-        return 'Player X won!'
+        return 'Player X won!';
     }
     return '';
   }
 
-  constructor(private route: ActivatedRoute,
-    private gameService: GameApiService) { }
+  constructor(
+    private stateService: StateService,
+    private gameService: GameApiService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.playerIdValue = params['playerId'];
-      this.restartGame();
-    });
+    if (!this.stateService.GetLoggedPlayerId()){
+      this.router.navigate(['/register']);
+    }
+    this.playerIdValue = this.stateService.GetLoggedPlayerId()!;
+    this.restartGame();
   }
 
   cellClick(cell: Cell): void {
     if (cell?.fieldState === 'Empty' && this.isOngoing) {
-      this.gameService.playTurn({id: this.board!.id, userMark: this.currentPlayer, rowNumber: cell.rowNumber, colNumber: cell.columnNumber}).subscribe(game => {
-        this.board = game;
-        console.log('board rows: ', this.board?.board);
-    });
+      this.gameService
+        .playTurn({
+          id: this.board!.id,
+          userMark: this.currentPlayer,
+          rowNumber: cell.rowNumber,
+          colNumber: cell.columnNumber,
+        })
+        .subscribe((game) => {
+          this.board = game;
+          console.log('board rows: ', this.board?.board);
+        });
     }
   }
 
   restartGame(): void {
-    this.gameService.initializeWithComputer({playerId: this.playerIdValue}).subscribe(game => {
-      this.board = game;
-      console.log('board rows: ', this.board?.board);
-    })
+    this.gameService
+      .initializeWithComputer({ playerId: this.playerIdValue })
+      .subscribe((game) => {
+        this.board = game;
+        console.log('board rows: ', this.board?.board);
+      });
   }
 }

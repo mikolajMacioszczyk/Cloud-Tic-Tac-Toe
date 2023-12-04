@@ -4,6 +4,7 @@ import { PlayerApiService } from '../services/player.api.service';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { StateService } from '../services/state.service';
 
 @Component({
   selector: 'app-register',
@@ -23,12 +24,14 @@ export class RegisterComponent {
 
   constructor(
     private playerService: PlayerApiService,
+    private stateService: StateService,
     private router: Router)
   {}
 
   public onSubmit(){
     this.playerService.registerPlayer(this.formData).subscribe(p => {
-      this.router.navigate(['/game'], { queryParams: { playerId: p.id } });
+      this.stateService.SetLoggedPlayerId(p.id);
+      this.router.navigate(['/']);
     });
   }
 }
