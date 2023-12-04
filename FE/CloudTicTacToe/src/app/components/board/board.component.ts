@@ -14,7 +14,7 @@ import { StateService } from '../../services/state.service';
   styleUrl: './board.component.scss',
 })
 export class BoardComponent implements OnInit {
-  private playerIdValue: string = '';
+  private gameId: string = '';
   board: GameBoard | null = null;
 
   currentPlayer: 'X' | 'O' = 'X';
@@ -42,11 +42,13 @@ export class BoardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (!this.stateService.GetLoggedPlayerId()){
-      this.router.navigate(['/register']);
+    if (!this.stateService.GetActiveGameId()){
+      this.router.navigate(['/']);
     }
-    this.playerIdValue = this.stateService.GetLoggedPlayerId()!;
-    this.restartGame();
+    this.gameId = this.stateService.GetActiveGameId()!;
+    this.gameService.getById(this.gameId).subscribe(board => {
+      this.board = board;
+    })
   }
 
   cellClick(cell: Cell): void {
@@ -65,12 +67,7 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  restartGame(): void {
-    this.gameService
-      .initializeWithComputer({ playerId: this.playerIdValue })
-      .subscribe((game) => {
-        this.board = game;
-        console.log('board rows: ', this.board?.board);
-      });
+  backToMenu(): void {
+    this.router.navigate(['/']);
   }
 }

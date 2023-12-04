@@ -29,6 +29,8 @@ namespace CloudTicTacToe.Application.Commands.Games.InitializeGameWithComputer
                 return new NotFound(command.PlayerId);
             }
 
+            await GameBoardHelper.ClosePlayerAciveGames(player, _unitOfWork.GameBoardRepository);
+
             var game = new GameBoard
             {
                 PlayerX = player,

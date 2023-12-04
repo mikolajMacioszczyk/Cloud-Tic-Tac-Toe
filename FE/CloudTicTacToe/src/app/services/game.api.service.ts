@@ -12,6 +12,10 @@ export class GameApiService {
 
   constructor(private http: HttpClient) {}
 
+  getById(gameId: string): Observable<GameBoard> {
+    return this.http.get<GameBoard>(this.apiUrl + '/' + gameId);
+  }
+
   initializeWithComputer(body: { playerId: string }): Observable<GameBoard> {
     return this.http.post<GameBoard>(this.apiUrl + '', body);
   }

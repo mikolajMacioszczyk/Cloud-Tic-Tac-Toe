@@ -25,5 +25,15 @@ namespace CloudTicTacToe.Application.Helpers
 
             return collection;
         }
+
+        public static async Task ClosePlayerAciveGames(Player player, IGameBoardRepository gameBoardRepository)
+        {
+            var playerGames = await gameBoardRepository.GetAllAsync(g => g.PlayerO == player || g.PlayerX == player);
+
+            foreach (var game in playerGames)
+            {
+                gameBoardRepository.Delete(game);
+            }
+        }
     }
 }

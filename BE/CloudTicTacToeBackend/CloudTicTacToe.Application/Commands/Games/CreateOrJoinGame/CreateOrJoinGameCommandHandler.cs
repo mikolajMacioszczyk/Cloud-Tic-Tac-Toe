@@ -30,7 +30,7 @@ namespace CloudTicTacToe.Application.Commands.Games.CreateOrJoinGame
                 return new NotFound(command.PlayerId);
             }
 
-            await CloseActivePlayerGames(player);
+            await GameBoardHelper.ClosePlayerAciveGames(player, _unitOfWork.GameBoardRepository);
 
             var (addedToExisting, game) = await TryUpdateExistingGame(player);
 
@@ -49,16 +49,6 @@ namespace CloudTicTacToe.Application.Commands.Games.CreateOrJoinGame
             }
 
             return _mapper.Map<GameBoardResult>(game);
-        }
-
-        private async Task CloseActivePlayerGames(Player player)
-        {
-            var playerGames = await _unitOfWork.GameBoardRepository.GetAllAsync(g => g.PlayerO == player || g.PlayerX == player);
-
-            foreach (var game in playerGames)
-            {
-                _unitOfWork.GameBoardRepository.Delete(game);
-            }
         }
 
         private async Task<(bool, GameBoard?)> TryUpdateExistingGame(Player player)

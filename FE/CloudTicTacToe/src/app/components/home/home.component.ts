@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { StateService } from '../../services/state.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { GameApiService } from '../../services/game.api.service';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,10 @@ import { CommonModule } from '@angular/common';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
-  constructor(private stateService: StateService, private router: Router)
+  constructor(
+    private stateService: StateService, 
+    private gameService: GameApiService,
+    private router: Router)
   {}
 
   ngOnInit(): void {
@@ -25,6 +29,9 @@ export class HomeComponent implements OnInit {
   }
 
   initializeGameWithComputer(){
-    this.router.navigate(['/game']);
+    this.gameService.initializeWithComputer({playerId: this.stateService.GetLoggedPlayerId()!}).subscribe(game => {
+      this.stateService.SetActiveGameId(game.id);
+      this.router.navigate(['/game']);
+    });
   }
 }
