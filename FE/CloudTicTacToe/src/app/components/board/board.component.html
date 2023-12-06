@@ -5,7 +5,7 @@
   <div class="row" *ngFor="let row of board?.board">
     <div
       class="cell"
-      ngClass="{'cell-disabled': isWaiting}"
+      [ngClass]="{'cell-disabled': isWaiting || !isYourTurn}"
       *ngFor="let cell of row"
       (click)="cellClick(cell)"
     >
