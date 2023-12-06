@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { GameApiService } from '../../services/game.api.service';
 import { GameBoard } from '../../models/game-board';
 import { Cell } from '../../models/cell';
 import { StateService } from '../../services/state.service';
+import { Subscription, timer } from 'rxjs';
 
 @Component({
   selector: 'app-board',
@@ -13,7 +14,8 @@ import { StateService } from '../../services/state.service';
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss',
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnInit, OnDestroy {
+  private subscription: Subscription | null = null; 
   private gameId: string = '';
   private playerId: string = '';
   board: GameBoard | null = null;
@@ -47,16 +49,23 @@ export class BoardComponent implements OnInit {
     private gameService: GameApiService,
     private router: Router
   ) {}
-
+  
   ngOnInit(): void {
     if (!this.stateService.GetLoggedPlayerId() || !this.stateService.GetActiveGameId()){
       this.router.navigate(['/']);
     }
     this.gameId = this.stateService.GetActiveGameId()!;
     this.playerId = this.stateService.GetLoggedPlayerId()!;
-    this.gameService.getById(this.gameId).subscribe(board => {
-      this.board = board;
-    })
+
+    this.subscription = timer(0, 500).subscribe(_ => {
+      this.gameService.getById(this.gameId).subscribe(board => {
+        this.board = board;
+      })
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe()
   }
 
   cellClick(cell: Cell): void {
@@ -70,7 +79,6 @@ export class BoardComponent implements OnInit {
         })
         .subscribe((game) => {
           this.board = game;
-          console.log('board rows: ', this.board?.board);
         });
     }
   }
