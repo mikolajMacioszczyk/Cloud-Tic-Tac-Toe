@@ -17,7 +17,7 @@ import { Subscription, timer } from 'rxjs';
 export class BoardComponent implements OnInit, OnDestroy {
   private subscription: Subscription | null = null; 
   private gameId: string = '';
-  private playerId: string = '';
+  playerId: string = '';
   board: GameBoard | null = null;
 
   get isOngoing(): boolean {

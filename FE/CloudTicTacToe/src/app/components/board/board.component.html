@@ -1,3 +1,12 @@
+<h2 *ngIf="board?.playerX">
+  Player X <span *ngIf="playerId === board?.playerX?.id">(You)</span> 
+  "{{ board!.playerX!.name }}" {{ board!.playerX!.points }} points
+</h2>
+<h2 *ngIf="board?.playerO">
+  Player O <span *ngIf="playerId === board?.playerO?.id">(You)</span> 
+  "{{ board!.playerO!.name }}" {{ board!.playerO!.points }} points
+</h2>
+
 <h1 *ngIf="isWaiting">Waiting for opponent</h1>
 <h1 *ngIf="isOngoing && isYourTurn">Your turn!</h1>
 <h1 *ngIf="isOngoing && !isYourTurn">Opponent turn</h1>
