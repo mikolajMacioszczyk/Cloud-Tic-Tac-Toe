@@ -5,21 +5,28 @@ using CloudTicTacToe.Application.Results;
 using CloudTicTacToe.Domain.Models;
 using MediatR;
 
-namespace CloudTicTacToe.Application.Commands.Players.RegisterPlayer
+namespace CloudTicTacToe.Application.Commands.Players.RegisterOrLoginPlayer
 {
-    public class RegisterPlayerCommandHandler : IRequestHandler<RegisterPlayerCommand, Result<PlayerResult>>
+    public class RegisterOrLoginPlayerCommandHandler : IRequestHandler<RegisterOrLoginPlayerCommand, Result<PlayerResult>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public RegisterPlayerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public RegisterOrLoginPlayerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public async Task<Result<PlayerResult>> Handle(RegisterPlayerCommand command, CancellationToken cancellationToken)
+        public async Task<Result<PlayerResult>> Handle(RegisterOrLoginPlayerCommand command, CancellationToken cancellationToken)
         {
+            var existing = await _unitOfWork.PlayerRepository.GetFirstOrDefaultAsync(p => p.Name == command.Name);
+
+            if (existing is {})
+            {
+                return _mapper.Map<PlayerResult>(existing);
+            }
+
             var player = new Player() { Name = command.Name, IsComputer = false };
 
             await _unitOfWork.PlayerRepository.AddAsync(player);

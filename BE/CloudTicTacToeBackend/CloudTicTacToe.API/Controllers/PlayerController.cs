@@ -1,5 +1,5 @@
 ﻿using CloudTicTacToe.API.BaseClasses;
-using CloudTicTacToe.Application.Commands.Players.RegisterPlayer;
+using CloudTicTacToe.Application.Commands.Players.RegisterOrLoginPlayer;
 using CloudTicTacToe.Application.Queries.Players.GetAllPlayers;
 using CloudTicTacToe.Application.Queries.Players.GetPlayerById;
 using CloudTicTacToe.Application.Results;
@@ -22,7 +22,7 @@ namespace CloudTicTacToe.API.Controllers
             HandleResult(await _mediator.Send(query));
 
         [HttpPost()]
-        public async Task<ActionResult<PlayerResult>> RegisterPlayer([FromBody] RegisterPlayerCommand command) =>
+        public async Task<ActionResult<PlayerResult>> RegisterOrLoginPlayer([FromBody] RegisterOrLoginPlayerCommand command) =>
             HandleResult(await _mediator.Send(command));
     }
 }

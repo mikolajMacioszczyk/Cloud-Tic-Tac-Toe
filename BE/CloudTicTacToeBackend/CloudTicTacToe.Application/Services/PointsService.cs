@@ -26,12 +26,12 @@ namespace CloudTicTacToe.Application.Services
             {
                 playerX.Points += 2;
                 _unitOfWork.PlayerRepository.Update(playerX);
-                playerO.Points -= 1;
+                playerO.Points = Math.Max(playerO.Points - 1, 0);
                 _unitOfWork.PlayerRepository.Update(playerO);
             }
             else if (gameBoard.State == GameBoardState.WinnO)
             {
-                playerX.Points -= 1;
+                playerX.Points = Math.Max(playerX.Points - 1, 0);
                 _unitOfWork.PlayerRepository.Update(playerX);
                 playerO.Points += 2;
                 _unitOfWork.PlayerRepository.Update(playerO);
