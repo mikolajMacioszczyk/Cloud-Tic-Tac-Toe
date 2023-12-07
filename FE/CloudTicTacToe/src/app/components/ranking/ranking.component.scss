@@ -1,0 +1,27 @@
+.ranking-banner {
+  background-color: #3498db;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+.ranking-container {
+  margin: 20px;
+}
+
+.player-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.player-name {
+  font-weight: bold;
+}
+
+.player-points {
+  color: #3498db;
+}

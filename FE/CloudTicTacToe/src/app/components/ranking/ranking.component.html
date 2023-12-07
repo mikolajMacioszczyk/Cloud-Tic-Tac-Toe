@@ -1,0 +1,10 @@
+<div class="ranking-banner">
+  <h1>Ranking</h1>
+</div>
+
+<div class="ranking-container">
+  <div class="player-item" *ngFor="let player of players">
+    <span class="player-name">{{ player.name }}</span>
+    <span class="player-points">{{ player.points }} points</span>
+  </div>
+</div>
