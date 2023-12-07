@@ -41,7 +41,7 @@ namespace CloudTicTacToe.Application.Commands.Games.CreateOrJoinGame
                     PlayerX = player,
                     PlayerO = null,
                     Cells = await GameBoardHelper.GenerateCellsForBoard(GameBoard.BOARD_SIZE, _unitOfWork.CellRepository),
-                    State = GameGoardState.Waiting
+                    State = GameBoardState.Waiting
                 };
 
                 await _unitOfWork.GameBoardRepository.AddAsync(game);
@@ -63,7 +63,7 @@ namespace CloudTicTacToe.Application.Commands.Games.CreateOrJoinGame
                 }
 
                 game.PlayerO = player;
-                game.State = GameGoardState.Ongoing;
+                game.State = GameBoardState.Ongoing;
                 game.NextPlayerId = GameBoardHelper.GetRandomStartingUser(game);
 
                 lock (mutex)

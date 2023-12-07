@@ -5,6 +5,6 @@ namespace CloudTicTacToe.Application.Interfaces
 {
     public interface IGameBoardStateService
     {
-        GameGoardState CheckState(GameBoard gameBoard);
+        GameBoardState CheckState(GameBoard gameBoard);
     }
 }

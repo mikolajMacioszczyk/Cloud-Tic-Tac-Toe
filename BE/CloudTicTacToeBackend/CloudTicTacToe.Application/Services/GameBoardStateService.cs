@@ -6,7 +6,7 @@ namespace CloudTicTacToe.Application.Services
 {
     public class GameBoardStateService : IGameBoardStateService
     {
-        public GameGoardState CheckState(GameBoard gameBoard)
+        public GameBoardState CheckState(GameBoard gameBoard)
         {
             var cells = gameBoard.Cells;
             for (var i = 0; i < GameBoard.BOARD_SIZE; i++)
@@ -37,10 +37,10 @@ namespace CloudTicTacToe.Application.Services
 
             if (cells.All(c => c.FieldState != FieldState.Empty))
             {
-                return GameGoardState.Draw;
+                return GameBoardState.Draw;
             }
 
-            return GameGoardState.Ongoing;
+            return GameBoardState.Ongoing;
         }
 
         private static FieldState? GetWinnerFromLine(IEnumerable<Cell> line)
@@ -65,14 +65,14 @@ namespace CloudTicTacToe.Application.Services
             return null;
         }
 
-        private static GameGoardState ConvertFromFieldStateToGameBoardState(FieldState fieldState)
+        private static GameBoardState ConvertFromFieldStateToGameBoardState(FieldState fieldState)
         {
             switch (fieldState)
             {
                 case FieldState.X:
-                    return GameGoardState.WinnX;
+                    return GameBoardState.WinnX;
                 case FieldState.O:
-                    return GameGoardState.WinnO;
+                    return GameBoardState.WinnO;
                 default:
                     throw new ArgumentOutOfRangeException(fieldState.ToString());
             }

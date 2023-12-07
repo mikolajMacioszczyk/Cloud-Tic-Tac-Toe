@@ -33,6 +33,7 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(ty
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IComputerPlayerService, SequentialComputerPlayerService>();
 builder.Services.AddScoped<IGameBoardStateService, GameBoardStateService>();
+builder.Services.AddScoped<IPointsService, PointsService>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 builder.Services.AddHostedService<TicTacToeMigrator>();

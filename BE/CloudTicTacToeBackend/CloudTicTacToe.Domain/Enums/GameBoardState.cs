@@ -1,6 +1,6 @@
 ﻿namespace CloudTicTacToe.Domain.Enums
 {
-    public enum GameGoardState
+    public enum GameBoardState
     {
         Waiting = 0,
         Ongoing = 1,

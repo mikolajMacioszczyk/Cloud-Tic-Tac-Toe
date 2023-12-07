@@ -14,13 +14,20 @@ namespace CloudTicTacToe.Application.Commands.Games.PlayTurn
         private readonly IUnitOfWork _unitOfWork;
         private readonly IComputerPlayerService _computerPlayerService;
         private readonly IGameBoardStateService _gameBoardStateService;
+        private readonly IPointsService _pointsService;
         private readonly IMapper _mapper;
 
-        public PlayTurnCommandHandler(IUnitOfWork unitOfWork, IComputerPlayerService computerPlayerService, IGameBoardStateService gameBoardStateService, IMapper mapper)
+        public PlayTurnCommandHandler(
+            IUnitOfWork unitOfWork, 
+            IComputerPlayerService computerPlayerService, 
+            IGameBoardStateService gameBoardStateService,
+            IPointsService pointsService, 
+            IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _computerPlayerService = computerPlayerService;
             _gameBoardStateService = gameBoardStateService;
+            _pointsService = pointsService;
             _mapper = mapper;
         }
 
@@ -33,7 +40,7 @@ namespace CloudTicTacToe.Application.Commands.Games.PlayTurn
                 return new NotFound(command.Id);
             }
 
-            if (game.State != GameGoardState.Ongoing)
+            if (game.State != GameBoardState.Ongoing)
             {
                 return new Failure($"Game already completed with state = {game.State}");
             }
@@ -53,6 +60,12 @@ namespace CloudTicTacToe.Application.Commands.Games.PlayTurn
                     return gameResult.MapNonSuccessfullTo<GameBoardResult>();
                 }
             }
+
+            if (game.State != GameBoardState.Ongoing)
+            {
+                _pointsService.AssignPointsFor(game, game.PlayerX, game.PlayerO!);
+            }
+
             _unitOfWork.GameBoardRepository.Update(game);
             await _unitOfWork.SaveChangesAsync();
             return _mapper.Map<GameBoardResult>(game);
@@ -67,7 +80,7 @@ namespace CloudTicTacToe.Application.Commands.Games.PlayTurn
                 return new Failure($"Player with id {command.PlayerId} is not part of the game");
             }
 
-            if (game.State == GameGoardState.Ongoing)
+            if (game.State == GameBoardState.Ongoing)
             {
                 _computerPlayerService.PlayComputerTurn(game.Cells, ToOppositeMark(userMark.Value));
 
