@@ -1,5 +1,6 @@
+import { PlayerApiService } from './../../services/player.api.service';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Player } from '../../models/player';
 
 @Component({
@@ -11,9 +12,15 @@ import { Player } from '../../models/player';
   templateUrl: './ranking.component.html',
   styleUrl: './ranking.component.scss'
 })
-export class RankingComponent {
-  players: Player[] = [
-    { id: 'id', name: "PLayer 1", isComputer: false, points: 1 },
-    { id: 'id', name: "PLayer 2", isComputer: false, points: 25 },
-  ]
+export class RankingComponent implements OnInit {
+  players: Player[] = []
+
+  constructor(private playerService: PlayerApiService)
+  {}
+
+  ngOnInit(): void {
+    this.playerService.getAllPlayers().subscribe(players => {
+      this.players = players.sort((p1, p2) => p2.points - p1.points);
+    })
+  }
 }
