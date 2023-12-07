@@ -29,4 +29,8 @@ export class AppComponent {
     this.stateService.RemovePlayerId();
     this.router.navigate(['/register']);
   }
+
+  navigateToHome(): void {
+    this.router.navigate(['/']);
+  }
 }

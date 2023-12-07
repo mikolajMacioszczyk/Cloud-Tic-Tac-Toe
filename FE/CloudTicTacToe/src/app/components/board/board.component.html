@@ -1,15 +1,15 @@
-<h2 *ngIf="board?.playerX">
+<h2 *ngIf="board?.playerX" class="player-info">
   Player X <span *ngIf="playerId === board?.playerX?.id">(You)</span> 
   "{{ board!.playerX!.name }}" {{ board!.playerX!.points }} points
 </h2>
-<h2 *ngIf="board?.playerO">
+<h2 *ngIf="board?.playerO" class="player-info">
   Player O <span *ngIf="playerId === board?.playerO?.id">(You)</span> 
   "{{ board!.playerO!.name }}" {{ board!.playerO!.points }} points
 </h2>
 
-<h1 *ngIf="isWaiting">Waiting for opponent</h1>
-<h1 *ngIf="isOngoing && isYourTurn">Your turn!</h1>
-<h1 *ngIf="isOngoing && !isYourTurn">Opponent turn</h1>
+<h1 *ngIf="isWaiting" class="status-message">Waiting for opponent</h1>
+<h1 *ngIf="isOngoing && isYourTurn" class="status-message your-turn">Your turn!</h1>
+<h1 *ngIf="isOngoing && !isYourTurn" class="status-message opponent-turn">Opponent turn</h1>
 <div class="tic-tac-toe-board">
   <div class="row" *ngFor="let row of board?.board">
     <div
@@ -24,5 +24,5 @@
     </div>
   </div>
 </div>
-<h1 *ngIf="!isOngoing">Winner: {{ stateMessage }}</h1>
-<button (click)="backToMenu()">Back to menu</button>
+<h1 *ngIf="!isOngoing" class="winner-message">Winner: {{ stateMessage }}</h1>
+<button (click)="backToMenu()" class="menu-button">Back to menu</button>
