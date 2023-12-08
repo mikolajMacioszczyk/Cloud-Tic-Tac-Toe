@@ -20,7 +20,9 @@ export class RankingComponent implements OnInit {
 
   ngOnInit(): void {
     this.playerService.getAllPlayers().subscribe(players => {
-      this.players = players.sort((p1, p2) => p2.points - p1.points);
+      this.players = players
+        .filter(p => !p.isComputer)
+        .sort((p1, p2) => p2.points - p1.points);
     })
   }
 }

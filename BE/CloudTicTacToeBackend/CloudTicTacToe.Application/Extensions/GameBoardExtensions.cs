@@ -8,8 +8,8 @@ namespace CloudTicTacToe.Application.Extensions
         public static bool IsCompletedGame(this GameBoard gameBoard) =>
             gameBoard.State switch
             {
-                GameBoardState.Draw or GameBoardState.WinnO or GameBoardState.WinnX => false,
-                _ => true
+                GameBoardState.Draw or GameBoardState.WinnO or GameBoardState.WinnX => true,
+                _ => false
             };
     }
 }

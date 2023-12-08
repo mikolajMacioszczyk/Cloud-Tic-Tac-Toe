@@ -15,7 +15,7 @@ import { Subscription, timer } from 'rxjs';
   styleUrl: './board.component.scss',
 })
 export class BoardComponent implements OnInit, OnDestroy {
-  private subscription: Subscription | null = null; 
+  private subscription: Subscription | null = null;
   private gameId: string = '';
   playerId: string = '';
   board: GameBoard | null = null;
@@ -25,11 +25,19 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   get isWaiting(): boolean {
-    return this.board?.state === "Waiting";
+    return this.board?.state === 'Waiting';
   }
 
   get isYourTurn(): boolean {
     return this.board?.nextPlayerId == this.playerId;
+  }
+
+  get isCompleted(): boolean {
+    return (
+      this.board?.state === 'Draw' ||
+      this.board?.state === 'WinnO' ||
+      this.board?.state === 'WinnX'
+    );
   }
 
   get stateMessage(): string {
@@ -49,23 +57,26 @@ export class BoardComponent implements OnInit, OnDestroy {
     private gameService: GameApiService,
     private router: Router
   ) {}
-  
+
   ngOnInit(): void {
-    if (!this.stateService.GetLoggedPlayerId() || !this.stateService.GetActiveGameId()){
+    if (
+      !this.stateService.GetLoggedPlayerId() ||
+      !this.stateService.GetActiveGameId()
+    ) {
       this.router.navigate(['/']);
     }
     this.gameId = this.stateService.GetActiveGameId()!;
     this.playerId = this.stateService.GetLoggedPlayerId()!;
 
-    this.subscription = timer(0, 500).subscribe(_ => {
-      this.gameService.getById(this.gameId).subscribe(board => {
+    this.subscription = timer(0, 500).subscribe((_) => {
+      this.gameService.getById(this.gameId).subscribe((board) => {
         this.board = board;
-      })
+      });
     });
   }
 
   ngOnDestroy(): void {
-    this.subscription?.unsubscribe()
+    this.subscription?.unsubscribe();
   }
 
   cellClick(cell: Cell): void {
@@ -85,5 +96,13 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   backToMenu(): void {
     this.router.navigate(['/']);
+  }
+
+  surrender(): void {
+    this.gameService
+      .surrender({ id: this.board!.id, playerId: this.playerId })
+      .subscribe((game) => {
+        this.board = game;
+      });
   }
 }

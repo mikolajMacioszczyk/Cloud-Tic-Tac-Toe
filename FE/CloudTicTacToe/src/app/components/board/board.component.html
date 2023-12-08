@@ -25,4 +25,5 @@
   </div>
 </div>
 <h1 *ngIf="!isOngoing" class="winner-message">Winner: {{ stateMessage }}</h1>
-<button (click)="backToMenu()" class="menu-button">Back to menu</button>
+<button *ngIf="isCompleted" (click)="backToMenu()" class="menu-button">Back to menu</button>
+<button *ngIf="this.board && !isCompleted" (click)="surrender()" class="menu-button">Surrender</button>

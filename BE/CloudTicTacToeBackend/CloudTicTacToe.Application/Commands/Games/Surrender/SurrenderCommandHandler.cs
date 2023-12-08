@@ -25,7 +25,7 @@ namespace CloudTicTacToe.Application.Commands.Games.Surrender
 
         public async Task<Result<GameBoardResult>> Handle(SurrenderCommand command, CancellationToken cancellationToken)
         {
-            var game = await _unitOfWork.GameBoardRepository.GetByIDAsync(command.Id, $"{nameof(GameBoard.PlayerO)},{nameof(GameBoard.PlayerX)}");
+            var game = await _unitOfWork.GameBoardRepository.GetByIDAsync(command.Id, $"{nameof(GameBoard.PlayerO)},{nameof(GameBoard.PlayerX)},{nameof(GameBoard.Cells)}");
 
             if (game is null)
             {
@@ -50,7 +50,10 @@ namespace CloudTicTacToe.Application.Commands.Games.Surrender
                 return new Failure($"Player with id {command.PlayerId} is not part of the game");
             }
 
-            _pointsService.AssignPointsFor(game, game.PlayerX, game.PlayerO!);
+            if (game.PlayerO != null){
+                _pointsService.AssignPointsFor(game, game.PlayerX, game.PlayerO!);
+            }
+            await _unitOfWork.SaveChangesAsync();
 
             return _mapper.Map<GameBoardResult>(game);
         }

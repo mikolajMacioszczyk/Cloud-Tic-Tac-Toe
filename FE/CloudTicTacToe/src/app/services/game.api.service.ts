@@ -27,4 +27,8 @@ export class GameApiService {
   playTurn(body: { id: string, playerId: string, rowNumber: number, colNumber: number }): Observable<GameBoard> {
     return this.http.put<GameBoard>(this.baseUrl + '/' + body.id + '/actions/play', body);
   }
+
+  surrender(body: { id: string, playerId: string }): Observable<GameBoard> {
+    return this.http.put<GameBoard>(this.baseUrl + '/' + body.id + '/actions/surrender', body);
+  }
 }
