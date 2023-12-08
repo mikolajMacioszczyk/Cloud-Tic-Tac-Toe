@@ -2,6 +2,7 @@ using CloudTicTacToe.API.BaseClasses;
 using CloudTicTacToe.Application.Commands.Games.CreateOrJoinGame;
 using CloudTicTacToe.Application.Commands.Games.InitializeGameWithComputer;
 using CloudTicTacToe.Application.Commands.Games.PlayTurn;
+using CloudTicTacToe.Application.Commands.Games.Surrender;
 using CloudTicTacToe.Application.Queries.Games.GetGameById;
 using CloudTicTacToe.Application.Results;
 using MediatR;
@@ -28,6 +29,10 @@ namespace CloudTicTacToe.API.Controllers
 
         [HttpPut("{Id}/actions/play")]
         public async Task<ActionResult<GameBoardResult>> PlayTurn([FromBody] PlayTurnCommand command) =>
+           HandleResult(await _mediator.Send(command));
+
+        [HttpPut("{Id}/actions/surrender")]
+        public async Task<ActionResult<GameBoardResult>> Surrender([FromBody] SurrenderCommand command) =>
            HandleResult(await _mediator.Send(command));
     }
 }
