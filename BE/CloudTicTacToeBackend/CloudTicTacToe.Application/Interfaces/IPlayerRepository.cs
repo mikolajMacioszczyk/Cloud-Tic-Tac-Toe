@@ -3,5 +3,7 @@
 namespace CloudTicTacToe.Application.Interfaces
 {
     public interface IPlayerRepository : IBaseEntityRepository<Player>
-    { }
+    {
+        Task<Player> GetComputerPlayer();
+    }
 }
