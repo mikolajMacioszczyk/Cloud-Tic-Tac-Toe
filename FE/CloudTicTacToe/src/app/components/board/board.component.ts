@@ -68,15 +68,18 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.gameId = this.stateService.GetActiveGameId()!;
     this.playerId = this.stateService.GetLoggedPlayerId()!;
 
-    this.subscription = timer(0, 500).subscribe((_) => {
-      this.gameService.getById(this.gameId).subscribe((board) => {
-        this.board = board;
-      });
-    });
+    // this.subscription = timer(0, 500).subscribe((_) => {
+    //   this.gameService.getById(this.gameId).subscribe((board) => {
+    //     this.board = board;
+    //   });
+    // });
+
+    this.gameService.createChatConnection();
   }
 
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
+    this.gameService.stopChatConnection();
   }
 
   cellClick(cell: Cell): void {

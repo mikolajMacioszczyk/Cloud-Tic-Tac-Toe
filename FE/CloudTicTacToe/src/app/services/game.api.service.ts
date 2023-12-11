@@ -3,14 +3,18 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { GameBoard } from '../models/game-board';
 import { environment } from '../../environments/environment';
+import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
+import { StateService } from './state.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GameApiService {
   private baseUrl = environment.apiUrl + '/Game';
+  private chatConnection?: HubConnection;
+  gameBoard: GameBoard | null = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private stateService: StateService) {}
 
   getById(gameId: string): Observable<GameBoard> {
     return this.http.get<GameBoard>(this.baseUrl + '/' + gameId);
@@ -30,5 +34,30 @@ export class GameApiService {
 
   surrender(body: { id: string, playerId: string }): Observable<GameBoard> {
     return this.http.put<GameBoard>(this.baseUrl + '/' + body.id + '/actions/surrender', body);
+  }
+
+  createChatConnection(){
+    this.chatConnection = new HubConnectionBuilder()
+      .withUrl(`${environment.hubUrl}/hubs/game`)
+      .withAutomaticReconnect()
+      .build();
+
+    this.chatConnection.start().catch(error => {
+      console.log(error);
+    });
+
+    this.chatConnection.on('UserConnected', () => {
+      console.log('stworzone połączenie');
+      this.addGameConnnectionId();
+    });
+  }
+
+  stopChatConnection(){
+    this.chatConnection?.stop().catch(error => console.log(error));
+  }
+
+  private async addGameConnnectionId() {
+    return this.chatConnection?.invoke('AddUserConnectionId', this.stateService.GetActiveGameId())
+      .catch(error => console.log(error));
   }
 }
