@@ -1,5 +1,8 @@
-﻿using CloudTicTacToe.Application.Interfaces;
+﻿using AutoMapper;
+using CloudTicTacToe.Application.Interfaces;
+using CloudTicTacToe.Application.Results;
 using CloudTicTacToe.Application.Services;
+using CloudTicTacToe.Domain.Models;
 using Microsoft.AspNetCore.SignalR;
 
 namespace CloudTicTacToe.API.Hubs
@@ -11,11 +14,13 @@ namespace CloudTicTacToe.API.Hubs
         private const string BoardUpdatedResponse = "BoardUpdated";
         private readonly GameConnectionService _connectionService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public GameHub(GameConnectionService connectionService, IUnitOfWork unitOfWork)
+        public GameHub(GameConnectionService connectionService, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _connectionService = connectionService;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public override async Task OnConnectedAsync()
@@ -44,13 +49,15 @@ namespace CloudTicTacToe.API.Hubs
             await DisplayBoard(gameId);
         }
 
-        // TODO: Doubled requests
+        // TODO: TurnPlayed
+
         public async Task DisplayBoard(Guid gameId)
         {
-            var gameBoard = await  _unitOfWork.GameBoardRepository.GetByIDAsync(gameId);
+            // TODO: move to some service => as no tracking
+            var gameBoard = await  _unitOfWork.GameBoardRepository.GetByIDAsync(gameId, $"{nameof(GameBoard.PlayerX)},{nameof(GameBoard.PlayerO)},{nameof(GameBoard.Cells)}");
             if (gameBoard != null)
             {
-                await Clients.Groups(GroupName).SendAsync(BoardUpdatedResponse, gameBoard);
+                await Clients.Groups(GroupName).SendAsync(BoardUpdatedResponse, _mapper.Map<GameBoardResult>(gameBoard));
             }
         }
     }

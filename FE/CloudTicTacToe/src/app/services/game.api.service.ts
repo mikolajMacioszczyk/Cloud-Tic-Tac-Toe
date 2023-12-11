@@ -47,8 +47,12 @@ export class GameApiService {
     });
 
     this.chatConnection.on('UserConnected', () => {
-      console.log('stworzone połączenie');
       this.addGameConnnectionId();
+    });
+
+    this.chatConnection.on('BoardUpdated', board => {
+      this.gameBoard = board;
+      console.log('got: ', board);
     });
   }
 
@@ -57,7 +61,7 @@ export class GameApiService {
   }
 
   private async addGameConnnectionId() {
-    return this.chatConnection?.invoke('AddUserConnectionId', this.stateService.GetActiveGameId())
+    return this.chatConnection?.invoke('AddGameConnectionId', this.stateService.GetActiveGameId())
       .catch(error => console.log(error));
   }
 }

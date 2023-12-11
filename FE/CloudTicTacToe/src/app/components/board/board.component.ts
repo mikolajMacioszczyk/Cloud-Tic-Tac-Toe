@@ -16,9 +16,11 @@ import { Subscription, timer } from 'rxjs';
 })
 export class BoardComponent implements OnInit, OnDestroy {
   private subscription: Subscription | null = null;
-  private gameId: string = '';
   playerId: string = '';
-  board: GameBoard | null = null;
+
+  get board(): GameBoard | null {
+    return this.gameService.gameBoard;
+  }
 
   get isOngoing(): boolean {
     return this.board?.state === 'Ongoing';
@@ -65,7 +67,6 @@ export class BoardComponent implements OnInit, OnDestroy {
     ) {
       this.router.navigate(['/']);
     }
-    this.gameId = this.stateService.GetActiveGameId()!;
     this.playerId = this.stateService.GetLoggedPlayerId()!;
 
     // this.subscription = timer(0, 500).subscribe((_) => {
@@ -92,7 +93,8 @@ export class BoardComponent implements OnInit, OnDestroy {
           colNumber: cell.columnNumber,
         })
         .subscribe((game) => {
-          this.board = game;
+          // TODO: Rethink assignement
+          console.log(game);
         });
     }
   }
@@ -105,7 +107,8 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.gameService
       .surrender({ id: this.board!.id, playerId: this.playerId })
       .subscribe((game) => {
-        this.board = game;
+        // TODO: Rethink assignement
+        console.log(game);
       });
   }
 }

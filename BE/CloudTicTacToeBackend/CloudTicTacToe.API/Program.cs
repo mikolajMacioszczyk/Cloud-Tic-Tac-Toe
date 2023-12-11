@@ -6,6 +6,7 @@ using CloudTicTacToe.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
+// TODO: Restore cors
 const string CorsAllPolicy = "AllowAll";
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,19 +41,32 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 builder.Services.AddHostedService<TicTacToeMigrator>();
 
-builder.Services.AddSignalR();
-builder.Services.AddCors(o => o.AddPolicy(CorsAllPolicy, corsBulder =>
-{
-    corsBulder.AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader();
-}));
+builder.Services.AddSignalR()
+    .AddJsonProtocol(options =>
+    {
+        options.PayloadSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        options.PayloadSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+        options.PayloadSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    });
+
+// builder.Services.AddCors(o => o.AddPolicy(CorsAllPolicy, corsBulder =>
+// {
+//     corsBulder.AllowAnyOrigin()
+//         .AllowAnyMethod()
+//         .AllowAnyHeader();
+// }));
+builder.Services.AddCors();
 
 var app = builder.Build();
 
-app.UseCors(CorsAllPolicy);
-
 // Configure the HTTP request pipeline.
+//app.UseCors(CorsAllPolicy);
+app.UseCors(x => x
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowCredentials()
+    .WithOrigins("http://localhost:4200"));
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
