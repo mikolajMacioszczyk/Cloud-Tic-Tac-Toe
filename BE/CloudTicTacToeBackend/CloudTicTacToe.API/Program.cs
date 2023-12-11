@@ -1,3 +1,4 @@
+using CloudTicTacToe.API.Hubs;
 using CloudTicTacToe.Application.Interfaces;
 using CloudTicTacToe.Application.Profiles;
 using CloudTicTacToe.Application.Services;
@@ -34,10 +35,12 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IComputerPlayerService, SequentialComputerPlayerService>();
 builder.Services.AddScoped<IGameBoardStateService, GameBoardStateService>();
 builder.Services.AddScoped<IPointsService, PointsService>();
+builder.Services.AddSingleton<GameConnectionService>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 builder.Services.AddHostedService<TicTacToeMigrator>();
 
+builder.Services.AddSignalR();
 builder.Services.AddCors(o => o.AddPolicy(CorsAllPolicy, corsBulder =>
 {
     corsBulder.AllowAnyOrigin()
@@ -61,5 +64,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<GameHub>("/hubs/game");
 
 app.Run();
