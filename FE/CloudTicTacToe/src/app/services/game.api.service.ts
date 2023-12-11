@@ -60,6 +60,11 @@ export class GameApiService {
     this.chatConnection?.stop().catch(error => console.log(error));
   }
 
+  async notifyTurnPlayed(){
+    return this.chatConnection?.invoke('notifyTurnPlayed', this.stateService.GetActiveGameId())
+      .catch(error => console.log(error));
+  }
+
   private async addGameConnnectionId() {
     return this.chatConnection?.invoke('AddGameConnectionId', this.stateService.GetActiveGameId())
       .catch(error => console.log(error));

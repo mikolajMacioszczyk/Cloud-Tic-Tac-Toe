@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using CloudTicTacToe.Application.Interfaces;
-using CloudTicTacToe.Application.Results;
+﻿using CloudTicTacToe.Application.Queries.Games.GetGameById;
 using CloudTicTacToe.Application.Services;
-using CloudTicTacToe.Domain.Models;
+using MediatR;
 using Microsoft.AspNetCore.SignalR;
 
 namespace CloudTicTacToe.API.Hubs
@@ -13,14 +11,12 @@ namespace CloudTicTacToe.API.Hubs
         private const string UserConnectedResponse = "UserConnected";
         private const string BoardUpdatedResponse = "BoardUpdated";
         private readonly GameConnectionService _connectionService;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public GameHub(GameConnectionService connectionService, IUnitOfWork unitOfWork, IMapper mapper)
+        public GameHub(GameConnectionService connectionService, IMediator mediator)
         {
             _connectionService = connectionService;
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            _mediator = mediator;
         }
 
         public override async Task OnConnectedAsync()
@@ -49,15 +45,17 @@ namespace CloudTicTacToe.API.Hubs
             await DisplayBoard(gameId);
         }
 
-        // TODO: TurnPlayed
+        public async Task NotifyTurnPlayed(Guid gameId)
+        {
+            await DisplayBoard(gameId);
+        }
 
         public async Task DisplayBoard(Guid gameId)
         {
-            // TODO: move to some service => as no tracking
-            var gameBoard = await  _unitOfWork.GameBoardRepository.GetByIDAsync(gameId, $"{nameof(GameBoard.PlayerX)},{nameof(GameBoard.PlayerO)},{nameof(GameBoard.Cells)}");
-            if (gameBoard != null)
+            var gameBoardResult = await _mediator.Send(new GetGameByIdQuery(gameId));
+            if (gameBoardResult.IsSuccess)
             {
-                await Clients.Groups(GroupName).SendAsync(BoardUpdatedResponse, _mapper.Map<GameBoardResult>(gameBoard));
+                await Clients.Groups(GroupName).SendAsync(BoardUpdatedResponse, gameBoardResult.Value);
             }
         }
     }

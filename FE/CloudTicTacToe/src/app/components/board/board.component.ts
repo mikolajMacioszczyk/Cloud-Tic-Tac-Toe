@@ -92,9 +92,8 @@ export class BoardComponent implements OnInit, OnDestroy {
           rowNumber: cell.rowNumber,
           colNumber: cell.columnNumber,
         })
-        .subscribe((game) => {
-          // TODO: Rethink assignement
-          console.log(game);
+        .subscribe((_) => {
+          this.gameService.notifyTurnPlayed();
         });
     }
   }
@@ -106,9 +105,8 @@ export class BoardComponent implements OnInit, OnDestroy {
   surrender(): void {
     this.gameService
       .surrender({ id: this.board!.id, playerId: this.playerId })
-      .subscribe((game) => {
-        // TODO: Rethink assignement
-        console.log(game);
+      .subscribe((_) => {
+        this.gameService.notifyTurnPlayed();
       });
   }
 }

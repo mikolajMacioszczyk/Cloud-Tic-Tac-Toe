@@ -5,7 +5,7 @@ namespace CloudTicTacToe.Application.Interfaces
 {
     public interface IBaseEntityRepository<TEntity> where TEntity : BaseDomainModel
     {
-        Task<TEntity?> GetByIDAsync(Guid id, string includeProperties = "");
+        Task<TEntity?> GetByIDAsync(Guid id, string includeProperties = "", bool asNoTracking = false);
         Task<TEntity?> GetFirstOrDefaultAsync(Expression<Func<TEntity, bool>> filter, string includeProperties = "");
         TEntity? GetFirstOrDefault(Expression<Func<TEntity, bool>> filter, string includeProperties = "");
         Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? filter = null,

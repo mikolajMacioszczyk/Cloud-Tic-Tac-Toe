@@ -28,7 +28,7 @@ public class RepositoryBase<TEntity> : IBaseEntityRepository<TEntity>
 
     #region Read
 
-    public virtual async Task<TEntity?> GetByIDAsync(Guid id, string includeProperties = "")
+    public virtual async Task<TEntity?> GetByIDAsync(Guid id, string includeProperties = "", bool asNoTracking = false)
     {
         IQueryable<TEntity> query = dbSet;
 
@@ -36,6 +36,11 @@ public class RepositoryBase<TEntity> : IBaseEntityRepository<TEntity>
          (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
         {
             query = query.Include(includeProperty);
+        }
+
+        if (asNoTracking)
+        {
+            query = query.AsNoTracking();
         }
 
         return await query.FirstOrDefaultAsync(e => e.Id == id);
