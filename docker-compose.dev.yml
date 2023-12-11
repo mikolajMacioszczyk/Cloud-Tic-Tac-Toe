@@ -26,8 +26,8 @@ services:
     depends_on:
       - postgres
 
-  # web:
-  #   build: 
-  #     context: ./Fe/CloudTicTacToe
-  #   ports:
-  #     - 4200:4200
+  web:
+    build: 
+      context: ./Fe/CloudTicTacToe
+    ports:
+      - 4200:4200

@@ -8,11 +8,14 @@ namespace CloudTicTacToe.API.Hubs
 {
     public class GameHub : Hub
     {
-        private const string GroupName = "Game";
+        private const string GroupNameBase = "Game";
         private const string UserConnectedResponse = "UserConnected";
         private const string BoardUpdatedResponse = "BoardUpdated";
         private readonly IGameConnectionService _connectionService;
         private readonly IMediator _mediator;
+
+        private string GetGroupName(Guid groupId) =>
+            GroupNameBase + groupId;
 
         public GameHub(IGameConnectionService connectionService, IMediator mediator)
         {
@@ -22,17 +25,16 @@ namespace CloudTicTacToe.API.Hubs
 
         public override async Task OnConnectedAsync()
         {
-            await Groups.AddToGroupAsync(Context.ConnectionId, GroupName);
             await Clients.Caller.SendAsync(UserConnectedResponse);
         }
 
         public async override Task OnDisconnectedAsync(Exception? exception)
         {
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, GroupName);
-
             var gameId = _connectionService.GetGameByConnnectionId(Context.ConnectionId);
+
             if (gameId != null)
             {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, GetGroupName(gameId.Value));
                 _connectionService.RemoveUserFromGame(gameId.Value, Context.ConnectionId);
                 await DisplayBoard(gameId.Value);
             }
@@ -42,6 +44,7 @@ namespace CloudTicTacToe.API.Hubs
 
         public async Task AddGameConnectionId(Guid gameId)
         {
+            await Groups.AddToGroupAsync(Context.ConnectionId, GetGroupName(gameId));
             _connectionService.AddGameConnnectionId(gameId, Context.ConnectionId);
             await DisplayBoard(gameId);
         }
@@ -56,7 +59,7 @@ namespace CloudTicTacToe.API.Hubs
             var gameBoardResult = await _mediator.Send(new GetGameByIdQuery(gameId));
             if (gameBoardResult.IsSuccess)
             {
-                await Clients.Groups(GroupName).SendAsync(BoardUpdatedResponse, gameBoardResult.Value);
+                await Clients.Groups(GetGroupName(gameId)).SendAsync(BoardUpdatedResponse, gameBoardResult.Value);
             }
         }
     }
