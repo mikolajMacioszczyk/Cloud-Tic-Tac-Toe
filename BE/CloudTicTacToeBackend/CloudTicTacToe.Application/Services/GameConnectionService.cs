@@ -1,6 +1,8 @@
-﻿namespace CloudTicTacToe.Application.Services
+﻿using CloudTicTacToe.Application.Interfaces;
+
+namespace CloudTicTacToe.Application.Services
 {
-    public class GameConnectionService
+    public class GameConnectionService : IGameConnectionService
     {
         // TODO: ConcurrentDictionary
         private static readonly Dictionary<Guid, List<string>> GamesToConnectionIds = new();
@@ -35,6 +37,10 @@
                 if (GamesToConnectionIds.ContainsKey(gameId))
                 {
                     GamesToConnectionIds[gameId].Remove(connectionId);
+                    if (GamesToConnectionIds[gameId].Count == 0)
+                    {
+                        GamesToConnectionIds.Remove(gameId);
+                    }
                 }
             }
         }

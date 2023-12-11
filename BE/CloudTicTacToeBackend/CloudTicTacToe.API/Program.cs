@@ -36,7 +36,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IComputerPlayerService, SequentialComputerPlayerService>();
 builder.Services.AddScoped<IGameBoardStateService, GameBoardStateService>();
 builder.Services.AddScoped<IPointsService, PointsService>();
-builder.Services.AddSingleton<GameConnectionService>();
+builder.Services.AddSingleton<IGameConnectionService, GameConnectionService>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 builder.Services.AddHostedService<TicTacToeMigrator>();

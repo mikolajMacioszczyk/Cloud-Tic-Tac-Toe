@@ -5,7 +5,6 @@ import { GameApiService } from '../../services/game.api.service';
 import { GameBoard } from '../../models/game-board';
 import { Cell } from '../../models/cell';
 import { StateService } from '../../services/state.service';
-import { Subscription, timer } from 'rxjs';
 
 @Component({
   selector: 'app-board',
@@ -15,7 +14,6 @@ import { Subscription, timer } from 'rxjs';
   styleUrl: './board.component.scss',
 })
 export class BoardComponent implements OnInit, OnDestroy {
-  private subscription: Subscription | null = null;
   playerId: string = '';
 
   get board(): GameBoard | null {
@@ -69,17 +67,10 @@ export class BoardComponent implements OnInit, OnDestroy {
     }
     this.playerId = this.stateService.GetLoggedPlayerId()!;
 
-    // this.subscription = timer(0, 500).subscribe((_) => {
-    //   this.gameService.getById(this.gameId).subscribe((board) => {
-    //     this.board = board;
-    //   });
-    // });
-
     this.gameService.createChatConnection();
   }
 
   ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
     this.gameService.stopChatConnection();
   }
 
