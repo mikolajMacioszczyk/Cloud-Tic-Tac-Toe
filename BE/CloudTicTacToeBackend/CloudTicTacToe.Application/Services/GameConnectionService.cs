@@ -4,7 +4,6 @@ namespace CloudTicTacToe.Application.Services
 {
     public class GameConnectionService : IGameConnectionService
     {
-        // TODO: ConcurrentDictionary
         private static readonly Dictionary<Guid, List<string>> GamesToConnectionIds = new();
 
         public void AddGameConnnectionId(Guid gameId, string connnectionId)

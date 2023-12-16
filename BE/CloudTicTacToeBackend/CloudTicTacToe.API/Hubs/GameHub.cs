@@ -1,6 +1,5 @@
 ﻿using CloudTicTacToe.Application.Interfaces;
 using CloudTicTacToe.Application.Queries.Games.GetGameById;
-using CloudTicTacToe.Application.Services;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 
@@ -14,7 +13,7 @@ namespace CloudTicTacToe.API.Hubs
         private readonly IGameConnectionService _connectionService;
         private readonly IMediator _mediator;
 
-        private string GetGroupName(Guid groupId) =>
+        private static string GetGroupName(Guid groupId) =>
             GroupNameBase + groupId;
 
         public GameHub(IGameConnectionService connectionService, IMediator mediator)
