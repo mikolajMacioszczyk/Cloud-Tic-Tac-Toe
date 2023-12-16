@@ -20,6 +20,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__PostgreSQLConnection: Server=postgres;Port=5432;Database=TicTacToe;User Id=postgres;Password=Pa55w0rd;
+      AllowedOrigins: http://localhost:4200,http://192.168.0.136:4200
     ports:
       - "8080:80"
       - "8082:443"
@@ -29,5 +30,7 @@ services:
   web:
     build: 
       context: ./Fe/CloudTicTacToe
+    environment:
+      API_BASE_URL: http://192.168.0.136:8080
     ports:
       - 4200:4200

@@ -15,4 +15,5 @@ RUN npm ci
 COPY . .
 EXPOSE 4200
 
-CMD ["ng", "serve", "--host", "0.0.0.0"]
+CMD ["sh", "./replace_api_url.sh"]
+#CMD ["ng", "serve", "--host", "0.0.0.0", "--configuration", "production"]

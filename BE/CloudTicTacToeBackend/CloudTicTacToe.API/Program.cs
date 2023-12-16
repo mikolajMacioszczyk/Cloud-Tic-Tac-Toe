@@ -4,6 +4,7 @@ using CloudTicTacToe.Application.Profiles;
 using CloudTicTacToe.Application.Services;
 using CloudTicTacToe.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Text.Json.Serialization;
 
 const string CorsAllPolicy = "AllowAll";
@@ -48,14 +49,16 @@ builder.Services.AddSignalR()
         options.PayloadSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     });
 
+var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string>();
+
 builder.Services.AddCors(o => o.AddPolicy(CorsAllPolicy, corsBulder =>
 {
-    corsBulder.AllowAnyHeader()
+    corsBulder
+        .AllowAnyHeader()
         .AllowAnyMethod()
         .AllowCredentials()
-        .WithOrigins("http://localhost:4200");
+        .WithOrigins(allowedOrigins.Split(","));
 }));
-builder.Services.AddCors();
 
 var app = builder.Build();
 
