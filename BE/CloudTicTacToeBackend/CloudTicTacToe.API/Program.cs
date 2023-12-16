@@ -4,7 +4,6 @@ using CloudTicTacToe.Application.Profiles;
 using CloudTicTacToe.Application.Services;
 using CloudTicTacToe.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using System.Text.Json.Serialization;
 
 const string CorsAllPolicy = "AllowAll";
@@ -25,11 +24,18 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//builder.Services.AddDbContext<TicTacToeContext>(options =>
-//           options.UseInMemoryDatabase(databaseName: "InMemoryDb"));
+var useInMemoryDb = builder.Configuration.GetSection("UseInMemoryDb").Get<bool>();
 
-builder.Services.AddDbContext<TicTacToeContext>(options =>
+if (useInMemoryDb)
+{
+    builder.Services.AddDbContext<TicTacToeContext>(options =>
+               options.UseInMemoryDatabase(databaseName: "InMemoryDb"));
+}
+else
+{
+    builder.Services.AddDbContext<TicTacToeContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQLConnection")));
+}
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(IUnitOfWork)));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
