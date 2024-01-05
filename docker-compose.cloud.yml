@@ -1,0 +1,22 @@
+#  run me with: docker-compose up -f docker-compose.cloud.yml
+
+version: '3.8'
+
+services:
+  api:
+    image: macioszczykmikolaj/tictactoe-api:latest
+    restart: always
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__PostgreSQLConnection: Host=endpoint;Port=5432;Username=postgres;Password=password;Database=database;
+      AllowedOrigins: http://publicUrl:4200
+    ports:
+      - "8080:80"
+      - "8082:443"
+
+  web:
+    image: macioszczykmikolaj/tictactoe-web:latest
+    environment:
+      API_BASE_URL: http://publicUrl:8080
+    ports:
+      - 80:4200
