@@ -1,9 +1,11 @@
 ﻿using CloudTicTacToe.Application.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CloudTicTacToe.API.BaseClasses;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public abstract class BaseApiController : ControllerBase
