@@ -22,4 +22,8 @@ RUN dotnet publish "CloudTicTacToe.API.csproj" -c Release -o /app/publish /p:Use
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+ENV ASPNETCORE_Kestrel__Certificates__Default__Password=password
+ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/etc/ssl/aspnetapp.pfx
 ENTRYPOINT ["dotnet", "CloudTicTacToe.API.dll"]
+
+COPY ./CloudTicTacToeBackend/CloudTicTacToe.API/SSL/aspnetapp.pfx /etc/ssl/

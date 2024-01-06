@@ -18,6 +18,7 @@ services:
       dockerfile: CloudTicTacToeBackend/CloudTicTacToe.API/Dockerfile
     restart: always
     environment:
+      ASPNETCORE_URLS: http://+;https://+
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__PostgreSQLConnection: Host=postgres;Port=5432;Username=postgres;Password=Password1;Database=TicTacToe;
       AllowedOrigins: http://localhost:4200,http://192.168.0.136:4200
@@ -31,6 +32,6 @@ services:
     build: 
       context: ./Fe/CloudTicTacToe
     environment:
-      API_BASE_URL: http://192.168.0.136:8080
+      API_BASE_URL: https://localhost:8082
     ports:
       - 4200:4200
