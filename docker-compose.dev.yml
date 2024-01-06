@@ -21,7 +21,9 @@ services:
       ASPNETCORE_URLS: http://+;https://+
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__PostgreSQLConnection: Host=postgres;Port=5432;Username=postgres;Password=Password1;Database=TicTacToe;
-      AllowedOrigins: http://localhost:4200,http://192.168.0.136:4200
+      AllowedOrigins: https://localhost:8082,http://localhost:4200,https://tictacttoe-mikolajm.auth.us-east-1.amazoncognito.com,https://tictacttoe-mikolajm.auth.us-east-1.amazoncognito.com/oauth2,https://tictacttoe-mikolajm.auth.us-east-1.amazoncognito.com/oauth2/authorize
+      Authentication__Cognito__ClientId: 1gjq4cvs70v6ns7356uapa1g06
+      Authentication__Cognito__CognitoDomain: https://tictacttoe-mikolajm.auth.us-east-1.amazoncognito.com
     ports:
       - "8080:80"
       - "8082:443"

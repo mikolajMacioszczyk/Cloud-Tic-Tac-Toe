@@ -64,30 +64,28 @@ builder.Services.AddCors(o => o.AddPolicy(CorsAllPolicy, corsBulder =>
     corsBulder
         .AllowAnyHeader()
         .AllowAnyMethod()
-        // TODO: Restore
-        //.AllowCredentials()
-        //.WithOrigins(allowedOrigins.Split(","));
-        .AllowAnyOrigin();
+        .AllowCredentials()
+        .WithOrigins(allowedOrigins.Split(","));
 }));
 
 builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-})
-           .AddCookie()
-           .AddOpenIdConnect(options =>
-           {
-               options.ResponseType = builder.Configuration["Authentication:Cognito:ResponseType"];
-               options.MetadataAddress = builder.Configuration["Authentication:Cognito:MetadataAddress"];
-               options.ClientId = builder.Configuration["Authentication:Cognito:ClientId"];
-               options.SaveTokens = true;
-               options.Events = new OpenIdConnectEvents()
-               {
-                   OnRedirectToIdentityProviderForSignOut = OnRedirectToIdentityProviderForSignOut
-               };
-           });
+    {
+        options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+    })
+    .AddCookie()
+    .AddOpenIdConnect(options =>
+    {
+        options.ResponseType = builder.Configuration["Authentication:Cognito:ResponseType"];
+        options.MetadataAddress = builder.Configuration["Authentication:Cognito:MetadataAddress"];
+        options.ClientId = builder.Configuration["Authentication:Cognito:ClientId"];
+        options.SaveTokens = true;
+        options.Events = new OpenIdConnectEvents()
+        {
+            OnRedirectToIdentityProviderForSignOut = OnRedirectToIdentityProviderForSignOut
+        };
+    });
 
 Task OnRedirectToIdentityProviderForSignOut(RedirectContext context)
 {
